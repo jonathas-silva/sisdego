@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500;800&display=swap');
+
+.principal-footer{
+    font-family: 'Barlow', sans-serif;
+    color: #FFF;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    position: fixed;
+    background-color: #2D459C;
+    min-height: 250px;
+}
+
+li{
+    color: #CCCCCC;
+    font-size: 45;
+}
+
+footer{
+    align-items: flex-end;
+}
+
+a{
+    text-decoration: none;
+}

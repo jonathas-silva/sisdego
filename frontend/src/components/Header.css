@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500;800&display=swap');
+
+.principal-header{
+    padding: 5px;
+    justify-content: space-between;
+    display: flex;
+    background-color: #FAFAFA;
+    min-height: 100px;
+    max-height: 200px;
+    align-items: center;
+  
+
+}
+
+.logo{
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: 50;
+    color: #2D459C;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active{
+    background-color: #2D459C;
+}
+
+a, a:hover {
+    text-decoration: none;
+    color: unset;
+  }

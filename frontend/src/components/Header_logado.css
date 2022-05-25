@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500;800&display=swap');
+
+.principal-header{
+    padding: 5px;
+    background-color: #FAFAFA;
+    align-items: center;
+  
+
+}
+
+.logo{
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: 50;
+    color: #2D459C;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active{
+    background-color: #2D459C;
+}
+
+a, a:hover {
+    text-decoration: none;
+    color: unset;
+  }
+
+  .item-menu{
+      font-family: 'Barlow', sans-serif;
+  }
+
+  .bordas{
+      border: 2px solid red;
+  }
+  .bordas-azul{
+    border: 2px solid blue;
+}
