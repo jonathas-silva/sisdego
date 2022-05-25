@@ -1,4 +1,4 @@
 [build]
-base = "."
+base = "./frontend"
 command = "yarn run build"
 publish = "./build/"
