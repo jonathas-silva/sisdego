@@ -44,7 +44,7 @@ export default function Inicio() {
                         </div>
                     </div>
                     <div className="d-grid gap-2 botao-solicitar">
-                        <button className="btn btn-primary botao-solicitar" type="button">Solicitar</button>
+                        <button className="btn btn-primary mt-4" type="button">Solicitar</button>
                     </div>
 
 

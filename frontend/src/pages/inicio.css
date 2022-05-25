@@ -6,8 +6,6 @@ h2 {
 
 .socilite-recolha {
     margin-top: 30px;
-
-    max-width: 500px;
     padding: 10px;
 }
 
@@ -22,4 +20,9 @@ h2 {
 
 body {
     background-color: #e7f0f5;
+}
+
+.cadastro{
+    position: relative;
+    width: 576px;
 }

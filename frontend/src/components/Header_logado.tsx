@@ -5,7 +5,7 @@ import './Header_logado.css'
 
 
 export default function Header() {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     return (
         <Stack direction='horizontal' className='principal-header align-items-center justify-content-between'>
             <Navbar expand="sm" className='principal-header'>
@@ -13,9 +13,9 @@ export default function Header() {
                     <Navbar.Toggle aria-controls="menu" onClick={() => setOpen(!open)} />
                     <Navbar.Collapse in={open} id="menu">
                         <Nav className='me-auto'>
-                            <Link to="/" className='nav-link' onClick={() => setOpen(!open)}>Nova Solicitação</Link>
-                            <Link to="/historico" className='nav-link' onClick={() => setOpen(!open)}>Histórico</Link>
-                            <Link to="/cadastro" className='nav-link' onClick={() => setOpen(!open)}>Cadastro</Link>
+                            <Link to="/" className='nav-link' onClick={() => setOpen(false)}>Nova Solicitação</Link>
+                            <Link to="/historico" className='nav-link' onClick={() => setOpen(false)}>Histórico</Link>
+                            <Link to="/cadastro" className='nav-link' onClick={() => setOpen(false)}>Cadastro</Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
