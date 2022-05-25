@@ -2,7 +2,7 @@ import './inicio.css'
 
 export default function Inicio() {
     return (
-        
+
         <div className='d-flex justify-content-center'>
             <div className='socilite-recolha d-flex flex-column'>
                 <h4>Solicite uma recolha</h4>

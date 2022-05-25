@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500;800&display=swap');
 
-.principal-footer{
+.principal-footer {
     font-family: 'Barlow', sans-serif;
     color: #FFF;
     bottom: 0;
@@ -11,15 +11,16 @@
     min-height: 250px;
 }
 
-li{
+li {
     color: #CCCCCC;
     font-size: 45;
+    text-decoration: none;
 }
 
-footer{
+footer {
     align-items: flex-end;
 }
 
-a{
+a {
     text-decoration: none;
 }

@@ -6,9 +6,9 @@ import Inicio from "./pages/Inicio";
 function App() {
   return (
     <>
-    <Header_logado />
-    <Inicio />  
-    <Footer />
+      <Header_logado />
+      <Inicio />
+      <Footer />
     </>
   )
 }

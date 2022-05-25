@@ -1,25 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
 
 h2 {
-    font-family:'Barlow', sans-serif;
+    font-family: 'Barlow', sans-serif;
 }
 
-.socilite-recolha{
+.socilite-recolha {
     margin-top: 30px;
 
     max-width: 500px;
     padding: 10px;
 }
 
-.formulario{
+.formulario {
     margin: 4px;
 }
 
-.botao-solicitar{
+.botao-solicitar {
     margin-top: 15px;
     color: #2D459C;
 }
 
-body{
+body {
     background-color: #e7f0f5;
 }
