@@ -1,5 +1,6 @@
 import { Container } from "react-bootstrap";
 import { FaTrashAlt } from 'react-icons/fa'
+import Footer from "../components/Footer";
 
 interface Usuario {
     key: number;
@@ -17,6 +18,7 @@ const joao: Usuario = {
 
 export function Cadastro() {
     return (
+        <>
         <Container className="d-flex justify-content-center">
             <div className='socilite-recolha d-flex flex-column cadastro'>
                 <h4>Cadastro</h4>
@@ -62,6 +64,9 @@ export function Cadastro() {
 
 
             </div>
+            
         </Container>
+        <Footer />
+        </>
     )
 }

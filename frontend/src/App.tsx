@@ -16,7 +16,6 @@ function App() {
       <Route path="/historico" element={<Historico />} />
       <Route path="/cadastro" element={<Cadastro />} />
       </Routes>
-      <Footer />
     </BrowserRouter>
   )
 }
