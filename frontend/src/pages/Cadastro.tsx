@@ -40,9 +40,9 @@ export function Cadastro() {
                         {
                             joao.enderecos.map(x => (
                                 <>
-                                    <div className="col-sm-6 d-grid px-0"><input type="text" placeholder={x} className="form-control" /></div>
-                                    <div className="col-sm-3 d-grid px-0"><button className="btn btn-primary">Alterar</button></div>
-                                    <div className="col-sm-1 d-grid px-0">
+                                    <div className="col-7 d-grid px-0"><input type="text" placeholder={x} className="form-control" /></div>
+                                    <div className="col-3 d-grid px-0"><button className="btn btn-primary">Alterar</button></div>
+                                    <div className="col-1 d-grid px-0">
                                         <button className="btn btn-outline-primary">
                                             <FaTrashAlt />
                                         </button></div>
