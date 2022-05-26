@@ -7,7 +7,7 @@ import './Header_logado.css'
 export default function Header() {
     const [open, setOpen] = useState(false);
     return (
-        <Stack direction='horizontal' className='fixed-top principal-header align-items-center justify-content-between'>
+        <Stack direction='horizontal' className='sticky-top principal-header align-items-center justify-content-between'>
             <Navbar expand="sm" className='principal-header'>
                 <Container className='p-0'>
                     <Navbar.Toggle aria-controls="menu" onClick={() => setOpen(!open)} />

@@ -3,11 +3,9 @@
 .principal-footer {
     font-family: 'Barlow', sans-serif;
     color: #FFF;
-    bottom: 0;
-    left: 0;
     width: 100%;
     background-color: #2D459C;
-    min-height: 200px;
+  
 }
 
 li {
@@ -23,3 +21,5 @@ footer {
 a {
     text-decoration: none;
 }
+
+  

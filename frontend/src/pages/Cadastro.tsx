@@ -18,8 +18,7 @@ const joao: Usuario = {
 
 export function Cadastro() {
     return (
-        <>
-        <Container className="d-flex justify-content-center">
+        <Container className="d-flex justify-content-center inicio-principal">
             <div className='socilite-recolha d-flex flex-column cadastro'>
                 <h4>Cadastro</h4>
                 <div className="formulario">
@@ -65,8 +64,8 @@ export function Cadastro() {
 
             </div>
             
+            
         </Container>
-        <Footer />
-        </>
+
     )
 }

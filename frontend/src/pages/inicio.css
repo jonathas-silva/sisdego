@@ -26,3 +26,7 @@ body {
     position: relative;
     width: 576px;
 }
+.inicio-principal{
+    position: inherit; 
+    min-height: 70vh;
+}
