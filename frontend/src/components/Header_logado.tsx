@@ -15,7 +15,7 @@ export default function Header() {
                         <Nav className='me-auto'>
                             <Link to="/" className='nav-link' onClick={() => setOpen(false)}>Nova Solicitação</Link>
                             <Link to="/historico" className='nav-link' onClick={() => setOpen(false)}>Histórico</Link>
-                            <Link to="/cadastro" className='nav-link' onClick={() => setOpen(false)}>Cadastro</Link>
+                            <Link to="/" className='nav-link' onClick={() => setOpen(false)}>Como funciona?</Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

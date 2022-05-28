@@ -1,6 +1,5 @@
 import { Container } from "react-bootstrap";
-import { FaTrashAlt } from 'react-icons/fa'
-import Footer from "../components/Footer";
+import { FaTrashAlt } from 'react-icons/fa';
 
 interface Usuario {
     key: number;

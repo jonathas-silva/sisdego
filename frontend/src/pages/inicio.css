@@ -4,10 +4,6 @@ h2 {
     font-family: 'Barlow', sans-serif;
 }
 
-.formulario {
-    margin: 4px;
-}
-
 .botao-solicitar {
     margin-top: 15px;
     color: #2D459C;
@@ -22,3 +18,8 @@ body {
     border: 2px solid red;
 }
 
+/* Uma mistura de responsividade com container e css*/
+
+.inicio-principal{
+    max-width: 800px;   
+}

@@ -3,10 +3,10 @@ import './inicio.css'
 
 export default function Inicio() {
     return (
-        <div className='inicio-principal container'>
+        <div className='container-sm inicio-principal'>
             <div className='mt-4 p-1 d-flex flex-column'>
                 <h4>Solicite uma recolha</h4>
-                <div className="mb-3 formulario">
+                <div className="m-1 mb-2">
                     <label className="form-label">Endereço:</label>
                     <select className="form-select" id="">
                         <option value={1}> Escolha ou cadastre seu endereço </option>
