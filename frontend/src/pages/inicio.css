@@ -4,11 +4,6 @@ h2 {
     font-family: 'Barlow', sans-serif;
 }
 
-.socilite-recolha {
-    margin-top: 30px;
-    padding: 10px;
-}
-
 .formulario {
     margin: 4px;
 }
@@ -22,11 +17,8 @@ body {
     background-color: #e7f0f5;
 }
 
-.cadastro{
-    position: relative;
-    width: 576px;
+
+.bordas{
+    border: 2px solid red;
 }
-.inicio-principal{
-    position: inherit; 
-    min-height: 70vh;
-}
+

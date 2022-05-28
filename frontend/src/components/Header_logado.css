@@ -27,10 +27,3 @@ a, a:hover {
   .item-menu{
       font-family: 'Barlow', sans-serif;
   }
-
-  .bordas{
-      border: 2px solid red;
-  }
-  .bordas-azul{
-    border: 2px solid blue;
-}

@@ -1,10 +1,10 @@
 
-import './Inicio.css'
+import './inicio.css'
 
 export default function Inicio() {
     return (
-        <div className='inicio-principal'>
-            <div className='socilite-recolha d-flex flex-column'>
+        <div className='inicio-principal container'>
+            <div className='mt-4 p-1 d-flex flex-column'>
                 <h4>Solicite uma recolha</h4>
                 <div className="mb-3 formulario">
                     <label className="form-label">Endereço:</label>

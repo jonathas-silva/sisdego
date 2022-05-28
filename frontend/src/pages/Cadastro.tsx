@@ -18,11 +18,11 @@ const joao: Usuario = {
 
 export function Cadastro() {
     return (
-        <Container className="d-flex justify-content-center inicio-principal">
-            <div className='socilite-recolha d-flex flex-column cadastro'>
+        <Container className="d-flex container">
+            <div className='socilite-recolha mt-4 p-1 d-flex flex-column cadastro'>
                 <h4>Cadastro</h4>
                 <div className="formulario">
-                    <div className="row gap-2   mt-4">
+                    <div className="row gap-2">
                         <label htmlFor="" className="form-label">Nome:</label>
                         <div className="col-sm-6 d-grid px-0"><input type="text" className="form-control" placeholder={joao.nome} /></div>
                         <div className="col-sm-4 d-grid px-0"><button className="btn btn-primary">Alterar</button></div>

@@ -2,9 +2,8 @@ import './Footer.css';
 
 export default function Footer() {
     return (
-        <footer className='footer'>
+        <footer className='footer mt-auto'>
             <div className='principal-footer d-flex flex-column justify-content-between p-1'>
-                <p className='h3'>Sistema de Descarte de Grandes Objetos</p>
                 <div>
                     <p className='h6'>Conheça mais:</p>
                     <ul className='list-unstyled text-decoration-none'>
