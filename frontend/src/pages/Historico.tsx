@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Container, Modal, ModalProps, OverlayTrigger, Row, Tooltip, TooltipProps } from "react-bootstrap";
+import { Button, Col, Container, Modal, ModalProps, OverlayTrigger, Row, Stack, Tooltip, TooltipProps } from "react-bootstrap";
 import { Omit, BsPrefixProps } from "react-bootstrap/esm/helpers";
 import { pedido1, pedido2, pedido3 } from "../assets/StaticData";
 import { Solicitacao } from "../assets/Types";
@@ -41,15 +41,15 @@ export function Historico() {
         <div className='container-sm p-0'>
             <div className='mt-4 p-1 d-flex flex-column'>
                 <h4>Solicitações em aberto</h4>
-                <Container className="px-0 mb-2 mt-4 bg-light border">
-                    <Row className="historico-cabecalho">
-                        <Col sm={1} xs={1} >Id</Col><Col sm={2} xs={4}>Data</Col><Col xs={4} sm={6}>Endereço</Col><Col>Tipo</Col>
+                <Container className="px-0 mb-2 mt-4">
+                    <Row className="historico-cabecalho lead px-2 text-center">
+                        <Col sm={1} xs={1} className="text-start">Id</Col><Col sm={2} xs={4}>Data</Col><Col xs={4} sm={6}>Endereço</Col><Col>Tipo</Col>
                     </Row>
                     {
                         pedidos.map(pedido => (
 
-                            <><Row className="historico-lista">
-                                <Col sm={1} xs={1}> <a href="#" className="btn-link" onClick={() =>
+                            <Stack><button className="btn btn-light border"
+                                onClick={() =>
 
                                     //inserindo os detalhes que serão mostrados no Modal
                                     setDetalhe(
@@ -63,12 +63,14 @@ export function Historico() {
                                     )
 
 
-                                }>{pedido.id}</a></Col>
-                                <Col sm={2} xs={4} className="text-truncate">{pedido.horario}</Col>
-                                <Col xs={4} sm={6} className="text-truncate">{pedido.endereco}</Col>
-                                <Col>{pedido.tipo}</Col>
-                            </Row>
-                            </>
+                                }>
+                                <Row className="historico-lista">
+                                    <Col sm={1} xs={1} className="text-start">{pedido.id}</Col>
+                                    <Col sm={2} xs={4} className="text-truncate">{pedido.horario}</Col>
+                                    <Col xs={4} sm={6} className="text-truncate">{pedido.endereco}</Col>
+                                    <Col>{pedido.tipo}</Col>
+                                </Row></button>
+                            </Stack>
                         ))
 
                     }
