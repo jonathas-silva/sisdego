@@ -24,3 +24,12 @@ export const pedido2: Solicitacao = {
     id: 2,
     endereco: "Av. Conde Francisco Matarazzo, 100"
 }
+
+export const pedido3: Solicitacao = {
+    usuario: hercule,
+    tipo: "Sofá",
+    descricao: "Sofá velho em boas condições",
+    horario: "28-05-2022 22:12",
+    id: 3,
+    endereco: "Av. Conde Francisco Matarazzo, 150"
+}

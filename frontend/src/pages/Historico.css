@@ -1,6 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap');
 
 .historico-cabecalho{
-    font-family: 'Barlow', sans-serif;
-    font-weight: bold;
+    font-weight: 600;
+    color: darkblue;
+}
+
+.historico-lista{
+    color:gray;
 }
