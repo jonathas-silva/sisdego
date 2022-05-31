@@ -1,6 +1,4 @@
-package com.jonathas.sisdego.entities;
-
-import jdk.jfr.Enabled;
+package com.jonathas.sisdego.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
