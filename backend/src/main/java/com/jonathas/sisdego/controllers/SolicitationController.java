@@ -3,11 +3,12 @@ package com.jonathas.sisdego.controllers;
 import com.jonathas.sisdego.domain.Solicitacao;
 import com.jonathas.sisdego.services.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -17,9 +18,22 @@ public class SolicitationController {
     @Autowired
     private SolicitacaoService service;
 
+    @GetMapping
+    public ResponseEntity<List<Solicitacao>> listAll(){
+        List<Solicitacao> resultado = service.findAll();
+        return ResponseEntity.ok().body(resultado);
+    }
 
     @GetMapping(value = "/{id}")
-    public Solicitacao findById(@PathVariable Long id){
-        return service.findById(id);
+    public ResponseEntity findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Solicitacao> saveSolicitation(@RequestBody Solicitacao solicitao){
+        Solicitacao created =  service.update(solicitao);
+
+        //retornando o objeto criado, inclusive com o seu devido id autogerado
+        return ResponseEntity.ok().body(created);
     }
 }
