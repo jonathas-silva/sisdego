@@ -1,54 +1,81 @@
 
+import React from 'react'
 import './inicio.css'
 
 export default function Inicio() {
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+        event.preventDefault();
+
+        const endereco = (event.target as any).endereco.value;
+        const descricao = (event.target as any).descricao.value;
+        const tipo = (event.target as any).tipo.value;
+        const dia = (event.target as any).dayOfWeek.value;
+        const periodo = (event.target as any).periodo.value;
+
+
+        console.log("Endereço: " + endereco);
+        console.log("Descrição: " + descricao);
+        console.log("Tipo: " + tipo);
+        console.log("Dia da Semana: " + dia);
+        console.log("Período: " + periodo);
+    }
+
+
     return (
         <div className='container-sm inicio-principal'>
             <div className='mt-4 p-1 d-flex flex-column'>
                 <h4>Solicite uma recolha</h4>
-                <div className="m-1 mb-2">
-                    <label className="form-label">Endereço:</label>
-                    <select className="form-select" id="">
-                        <option value={1}> Escolha ou cadastre seu endereço </option>
-                    </select>
+                <form className="m-1 mb-2" onSubmit={handleSubmit}>
+                    <label className="form-label" htmlFor='endereco'>Endereço:</label>
+                    <input type="text" className="form-control" id="endereco" placeholder="Insira seu endereço"></input>
 
-                    <div className='formulario'>
-                        <label htmlFor='text-area' className='form-label text-area-personal'>Descrição:</label>
+
+                    <div className="mt-3">
+                        <label className="form-label" htmlFor='tipo'>Tipo:</label>
+                        <select className="form-select" id="tipo">
+                            <option>Móveis</option>
+                            <option>Eletrodomésticos</option>
+                            <option>Madeira/ Galhos</option>
+                            <option>Outros</option>
+                        </select>
+                    </div>
+
+
+                    <div className='formulario mt-2'>
+                        <label htmlFor='descricao' className='form-label text-area-personal'>Descrição:</label>
                         <div className="mb-3">
-                            <input type="text" className="form-control" id="text-area" placeholder="Ex.: Sofá velho, 2m x 1.85m, etc "></input>
+                            <input type="text" className="form-control" id="descricao" placeholder="Ex.: Sofá velho, 2m x 1.85m, etc "></input>
                         </div>
                     </div>
 
                     <div className='row g-3'>
-                        <label htmlFor='text-area' className='form-label text-area-personal'>Melhor horário para recolha:</label>
+                        <label htmlFor='dayOfWeek' className='form-label text-area-personal'>Melhor horário para recolha:</label>
                         <div className="col-sm-6">
-                            <select className="form-select" id="inputEmail4">
-                                <option value={1}>Dia da semana</option>
-                                <option value={2}>Segunda-Feira</option>
-                                <option value={3}>Terça-Feira</option>
-                                <option value={4}>Quarta-Feira</option>
-                                <option value={5}>Quinta-Feira</option>
-                                <option value={6}>Sexta-Feira</option>
-                                <option value={7}>Sábado</option>
-                                <option value={8}>Domingo</option>
+                            <select className="form-select" id="dayOfWeek">
+                                <option>Segunda-Feira</option>
+                                <option>Terça-Feira</option>
+                                <option>Quarta-Feira</option>
+                                <option>Quinta-Feira</option>
+                                <option>Sexta-Feira</option>
+                                <option>Sábado</option>
+                                <option>Domingo</option>
                             </select>
                         </div>
                         <div className="col-sm-6">
-                            <select className="form-select" id="inputEmail4">
-                                <option value={1}>Período</option>
-                                <option value={2}>Manhã</option>
-                                <option value={3}>Tarde</option>
-                                <option value={4}>Noite</option>
-
+                            <select className="form-select" id="periodo">
+                                <option>Manhã</option>
+                                <option>Tarde</option>
+                                <option>Noite</option>
                             </select>
                         </div>
                     </div>
                     <div className="d-grid gap-2 botao-solicitar">
-                        <button className="btn btn-primary mt-4" type="button">Solicitar</button>
+                        <button className="btn btn-primary mt-4" type="submit">Solicitar</button>
                     </div>
+                </form>
 
-
-                </div>
 
 
 
