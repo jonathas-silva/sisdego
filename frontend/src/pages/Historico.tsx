@@ -57,7 +57,7 @@ export function Historico() {
                                             id: pedido.id,
                                             tipo: pedido.tipo,
                                             descricao: pedido.descricao,
-                                            data: pedido.horario,
+                                            data: pedido.data,
                                             mostrar: true
                                         }
                                     )

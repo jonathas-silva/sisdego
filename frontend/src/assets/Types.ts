@@ -6,9 +6,8 @@ export type Usuario = {
 
 export type Solicitacao = {
     id: number;
-    usuario: Usuario;
     tipo: string;
     descricao: string;
-    horario: string;
+    data: string;
     endereco: string;
 }

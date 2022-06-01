@@ -6,6 +6,7 @@ import { Cadastro } from "./pages/Cadastro";
 import { Historico } from "./pages/Historico";
 import Inicio from "./pages/Inicio";
 import './App.css'
+import Teste from "./pages/testes";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route path="/historico" element={<Historico />} />
             <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/testes" element={<Teste />} />
           </Routes>
           <Footer />
         </div>
