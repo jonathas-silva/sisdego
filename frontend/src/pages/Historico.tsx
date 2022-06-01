@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Modal, ModalProps, OverlayTrigger, Row, Stack, Tooltip, TooltipProps } from "react-bootstrap";
-import { Omit, BsPrefixProps } from "react-bootstrap/esm/helpers";
-import { pedido1, pedido2, pedido3 } from "../assets/StaticData";
 import { Solicitacao } from "../assets/Types";
 import './Historico.css';
 import { FcCancel, FcCheckmark } from 'react-icons/fc';
+import axios from "axios";
 
-const pedidos: Solicitacao[] = [pedido1, pedido2, pedido3];
+
 
 const dicaBtnApprove = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -26,6 +25,7 @@ interface detalhes {
     tipo?: string;
     descricao?: string;
     data?: string;
+    endereco?:string;
     mostrar: boolean;
 }
 
@@ -33,6 +33,19 @@ export function Historico() {
     const inicializado: detalhes = {
         mostrar: false
     }
+
+    const [lista, setLista] = useState<Solicitacao[]>();
+
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/solicitacoes/").then(
+            response => {
+                const data = response.data as Solicitacao[];
+                setLista(data);
+            }
+
+        )
+    }, []);
 
     //um use state que carrega todas as informações que eu preciso para mostrar os detalhes
     const [detalhe, setDetalhe] = React.useState<detalhes>(inicializado);
@@ -46,18 +59,19 @@ export function Historico() {
                         <Col sm={1} xs={1} className="text-start">Id</Col><Col sm={2} xs={4}>Data</Col><Col xs={4} sm={6}>Endereço</Col><Col>Tipo</Col>
                     </Row>
                     {
-                        pedidos.map(pedido => (
+                        lista?.map(lista => (
 
-                            <Stack><button className="btn btn-light border"
+                            <Stack key={lista.id}><button className="btn btn-light border"
                                 onClick={() =>
 
                                     //inserindo os detalhes que serão mostrados no Modal
                                     setDetalhe(
                                         {
-                                            id: pedido.id,
-                                            tipo: pedido.tipo,
-                                            descricao: pedido.descricao,
-                                            data: pedido.data,
+                                            id: lista.id,
+                                            tipo: lista.tipo,
+                                            descricao: lista.descricao,
+                                            data: lista.data,
+                                            endereco: lista.endereco,
                                             mostrar: true
                                         }
                                     )
@@ -65,10 +79,10 @@ export function Historico() {
 
                                 }>
                                 <Row className="historico-lista">
-                                    <Col sm={1} xs={1} className="text-start">{pedido.id}</Col>
-                                    <Col sm={2} xs={4} className="text-truncate">{pedido.horario}</Col>
-                                    <Col xs={4} sm={6} className="text-truncate">{pedido.endereco}</Col>
-                                    <Col>{pedido.tipo}</Col>
+                                    <Col sm={1} xs={1} className="text-start">{lista.id}</Col>
+                                    <Col sm={2} xs={4} className="text-truncate">{lista.data}</Col>
+                                    <Col xs={4} sm={6} className="text-truncate">{lista.endereco}</Col>
+                                    <Col className="text-truncate">{lista.tipo}</Col>
                                 </Row></button>
                             </Stack>
                         ))
@@ -92,15 +106,15 @@ export function Historico() {
 
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        Solicitação {detalhe.id}
+                        {detalhe.tipo}
                     </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                     <div>
-                        <h4>{detalhe.tipo}</h4>
+                        <p className="fw-light">Criado em {detalhe.data}</p>
                         <p>{detalhe.descricao}</p>
-                        <p>Criado em {detalhe.data}</p>
+                        <p>Endereço: {detalhe.endereco}</p>
                     </div>
                     <div className="text-start">
                         {/* inserção de dica sobre o botão*/}

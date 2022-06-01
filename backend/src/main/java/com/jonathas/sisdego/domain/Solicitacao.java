@@ -18,15 +18,19 @@ public class Solicitacao {
 
     private String data;
 
+
+    private String endereco;
+
     public Solicitacao(){
 
     }
 
-    public Solicitacao(Long id, String tipo, String descricao, String data) {
+    public Solicitacao(Long id, String tipo, String descricao, String data, String endereco) {
         this.id = id;
         this.tipo = tipo;
         this.descricao = descricao;
         this.data = data;
+        this.endereco = endereco;
     }
 
     public Long getId() {
@@ -59,5 +63,13 @@ public class Solicitacao {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 }
