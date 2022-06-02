@@ -1,4 +1,5 @@
 
+import axios, { AxiosRequestConfig } from 'axios';
 import React from 'react'
 import './inicio.css'
 
@@ -8,18 +9,41 @@ export default function Inicio() {
 
         event.preventDefault();
 
-        const endereco = (event.target as any).endereco.value;
-        const descricao = (event.target as any).descricao.value;
         const tipo = (event.target as any).tipo.value;
-        const dia = (event.target as any).dayOfWeek.value;
-        const periodo = (event.target as any).periodo.value;
-
-
+        const descricao = (event.target as any).descricao.value;
+        const data = new Date().toLocaleString();
+        const endereco = (event.target as any).endereco.value;
+        //não vamos usar essa implementação, por enquanto
+        //const dia = (event.target as any).dayOfWeek.value;
+        //const periodo = (event.target as any).periodo.value;
+        
+        /* console.log(data);
         console.log("Endereço: " + endereco);
         console.log("Descrição: " + descricao);
-        console.log("Tipo: " + tipo);
-        console.log("Dia da Semana: " + dia);
-        console.log("Período: " + periodo);
+        console.log("Tipo: " + tipo); */
+
+        //Configuração do método POST
+        const config: AxiosRequestConfig = {
+            baseURL: 'http://localhost:8080',
+            method: 'POST',
+            url: '/solicitacoes',
+            data: {
+                tipo: tipo,
+                descricao: descricao,
+                data: data,
+                endereco: endereco
+            }
+        }
+
+        //Disparando o método post
+        axios(config).then(
+            response => {
+                console.log(response.status);
+                console.log(response.data);
+            }
+        )
+
+
     }
 
 
