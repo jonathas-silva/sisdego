@@ -36,4 +36,11 @@ public class SolicitationController {
         //retornando o objeto criado, inclusive com o seu devido id autogerado
         return ResponseEntity.ok().body(created);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteSolicitation(@PathVariable Long id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

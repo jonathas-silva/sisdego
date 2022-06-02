@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Modal, ModalProps, OverlayTrigger, Row, Stack, Tooltip, TooltipProps } from "react-bootstrap";
 import { Solicitacao } from "../assets/Types";
 import './Historico.css';
-import { FcCancel, FcCheckmark } from 'react-icons/fc';
-import axios from "axios";
+import { FcCheckmark } from 'react-icons/fc';
+import { FaTrashAlt } from 'react-icons/fa';
+import {GrUpdate} from 'react-icons/gr';
+import axios, { AxiosRequestConfig } from "axios";
 
 
 
@@ -14,7 +16,7 @@ const dicaBtnApprove = (props: JSX.IntrinsicAttributes & TooltipProps & React.Re
 );
 const dicaBtnCancel = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
     <Tooltip id="button-tooltip" {...props}>
-        Cancelar solicitação
+        Deletar solicitação
     </Tooltip>
 );
 
@@ -25,7 +27,7 @@ interface detalhes {
     tipo?: string;
     descricao?: string;
     data?: string;
-    endereco?:string;
+    endereco?: string;
     mostrar: boolean;
 }
 
@@ -37,6 +39,12 @@ export function Historico() {
     const [lista, setLista] = useState<Solicitacao[]>();
 
 
+    /*useState utilizado para controlar a atualização do DB. Dado que o useEffect está
+    monitorando a variável 'atualizar', então basta mudar o valor dessa variável para
+    gerar uma nova leitura*/
+    const [atualizar, setAtualizar] = useState(true);
+
+
     useEffect(() => {
         axios.get("http://localhost:8080/solicitacoes/").then(
             response => {
@@ -45,7 +53,34 @@ export function Historico() {
             }
 
         )
-    }, []);
+        console.log('iteraction');
+    }, [atualizar]);
+
+    function deleteEntry(id: number | undefined) {
+
+        const config: AxiosRequestConfig = {
+            baseURL: 'http://localhost:8080',
+            method: 'DELETE',
+            url: `solicitacoes/${id}`
+        }
+
+        axios(config).then(
+            response => {
+                console.log(response.status);
+            }
+        )
+
+        //usando o useEffect para atualizar a leitura do banco de dados
+        setAtualizar(!atualizar);
+
+        //utilizado para fechar o Modal
+        setDetalhe({ mostrar: false });
+    }
+
+
+
+
+
 
     //um use state que carrega todas as informações que eu preciso para mostrar os detalhes
     const [detalhe, setDetalhe] = React.useState<detalhes>(inicializado);
@@ -53,7 +88,10 @@ export function Historico() {
     return (
         <div className='container-sm p-0'>
             <div className='mt-4 p-1 d-flex flex-column'>
-                <h4>Solicitações em aberto</h4>
+                <div className="d-flex justify-content-between">
+                <h4 className="pt-1">Solicitações em aberto</h4>
+                <button className="btn border" onClick={ () => setAtualizar(!atualizar) }><GrUpdate /></button>
+                </div>
                 <Container className="px-0 mb-2 mt-4">
                     <Row className="historico-cabecalho lead px-2 text-center">
                         <Col sm={1} xs={1} className="text-start">Id</Col><Col sm={2} xs={4}>Data</Col><Col xs={4} sm={6}>Endereço</Col><Col>Tipo</Col>
@@ -127,7 +165,7 @@ export function Historico() {
                             placement="bottom"
                             delay={{ show: 250, hide: 400 }}
                             overlay={dicaBtnCancel}>
-                            <button className="btn btn-light border px-3"><FcCancel /></button>
+                            <button className="btn btn-light border px-3" onClick={() => deleteEntry(detalhe.id)}><FaTrashAlt /></button>
                         </OverlayTrigger>
                     </div>
 

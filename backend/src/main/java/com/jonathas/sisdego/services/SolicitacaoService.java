@@ -30,6 +30,9 @@ public class SolicitacaoService {
     public Solicitacao update(Solicitacao solicitao) {
         //assumindo que vamos receber o body sem o id
         return repository.save(solicitao);
+    }
 
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }
