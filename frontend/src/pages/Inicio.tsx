@@ -1,9 +1,13 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import './inicio.css'
 
 export default function Inicio() {
+
+    //declarando o navigate
+    const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
@@ -13,37 +17,46 @@ export default function Inicio() {
         const descricao = (event.target as any).descricao.value;
         const data = new Date().toLocaleString();
         const endereco = (event.target as any).endereco.value;
-        //não vamos usar essa implementação, por enquanto
-        //const dia = (event.target as any).dayOfWeek.value;
-        //const periodo = (event.target as any).periodo.value;
-        
-        /* console.log(data);
-        console.log("Endereço: " + endereco);
-        console.log("Descrição: " + descricao);
-        console.log("Tipo: " + tipo); */
 
-        //Configuração do método POST
-        const config: AxiosRequestConfig = {
-            baseURL: 'http://localhost:8080',
-            method: 'POST',
-            url: '/solicitacoes',
-            data: {
-                tipo: tipo,
-                descricao: descricao,
-                data: data,
-                endereco: endereco
+
+        if ( endereco == "" || descricao == "") {
+            alert("Endereço e descrição não podem ser nulos!");
+        } else { //só dispara se os campos não forem nulos. Simples assim. Sem Re-renderização
+
+
+            //não vamos usar essa implementação, por enquanto
+            //const dia = (event.target as any).dayOfWeek.value;
+            //const periodo = (event.target as any).periodo.value;
+
+            /* console.log(data);
+            console.log("Endereço: " + endereco);
+            console.log("Descrição: " + descricao);
+            console.log("Tipo: " + tipo); */
+
+            //Configuração do método POST
+            const config: AxiosRequestConfig = {
+                baseURL: 'http://localhost:8080',
+                method: 'POST',
+                url: '/solicitacoes',
+                data: {
+                    tipo: tipo,
+                    descricao: descricao,
+                    data: data,
+                    endereco: endereco
+                }
             }
+
+            //Disparando o método post
+            axios(config).then(
+                response => {
+                    console.log(response.status);
+                    console.log(response.data);
+                    alert("Solicitação criada com sucesso!");
+                    navigate("/historico");
+                }
+            )
+           
         }
-
-        //Disparando o método post
-        axios(config).then(
-            response => {
-                console.log(response.status);
-                console.log(response.data);
-            }
-        )
-
-
     }
 
 

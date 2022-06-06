@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Modal, ModalProps, OverlayTrigger, Row, Stack, Tooltip, TooltipProps } from "react-bootstrap";
+import { Button, Col, Container, Modal, ModalProps, OverlayTrigger, Row, Stack, Toast, ToastContainer, Tooltip, TooltipProps } from "react-bootstrap";
 import { Solicitacao } from "../assets/Types";
 import './Historico.css';
 import { FcCheckmark } from 'react-icons/fc';
@@ -38,6 +38,8 @@ export function Historico() {
 
     const [lista, setLista] = useState<Solicitacao[]>();
 
+    const [show, setShow] = useState(false);
+
 
     /*useState utilizado para controlar a atualização do DB. Dado que o useEffect está
     monitorando a variável 'atualizar', então basta mudar o valor dessa variável para
@@ -67,11 +69,13 @@ export function Historico() {
         axios(config).then(
             response => {
                 console.log(response.status);
+                setAtualizar(!atualizar); //está atualizando apenas depois que a resposta é recebida
+                setShow(true);
             }
         )
 
         //usando o useEffect para atualizar a leitura do banco de dados
-        setAtualizar(!atualizar);
+        
 
         //utilizado para fechar o Modal
         setDetalhe({ mostrar: false });
@@ -176,7 +180,15 @@ export function Historico() {
                 </Modal.Footer>
             </Modal>
             {/* <DetailsModal show={detailShow} onHide={() => setDetailShow(false)} /> */}
+        
 
+
+            {/* Toast */}
+           <ToastContainer position="middle-center">
+            <Toast show={show} onClose={() => setShow(false)} delay={2000} autohide>
+            <Toast.Body>Solicitação excluída com sucesso!</Toast.Body>
+            </Toast>
+            </ToastContainer>
 
         </div>
     )
