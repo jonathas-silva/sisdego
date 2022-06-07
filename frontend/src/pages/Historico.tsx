@@ -4,14 +4,15 @@ import { Solicitacao } from "../assets/Types";
 import './Historico.css';
 import { FcCheckmark } from 'react-icons/fc';
 import { FaTrashAlt } from 'react-icons/fa';
-import {GrUpdate} from 'react-icons/gr';
+import { BsPencilFill } from 'react-icons/bs';
+import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosRequestConfig } from "axios";
 
 
 
 const dicaBtnApprove = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
     <Tooltip id="button-tooltip" {...props}>
-        Aceitar solicitação
+        Editar solicitação
     </Tooltip>
 );
 const dicaBtnCancel = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
@@ -38,7 +39,8 @@ export function Historico() {
 
     const [lista, setLista] = useState<Solicitacao[]>();
 
-    const [show, setShow] = useState(false);
+    const [showToastDelete, setShowToastDelete] = useState(false);
+    const [showToastEdit, setShowToastEdit] = useState(false);
 
 
     /*useState utilizado para controlar a atualização do DB. Dado que o useEffect está
@@ -70,12 +72,12 @@ export function Historico() {
             response => {
                 console.log(response.status);
                 setAtualizar(!atualizar); //está atualizando apenas depois que a resposta é recebida
-                setShow(true);
+                setShowToastDelete(true);
             }
         )
 
         //usando o useEffect para atualizar a leitura do banco de dados
-        
+
 
         //utilizado para fechar o Modal
         setDetalhe({ mostrar: false });
@@ -88,13 +90,20 @@ export function Historico() {
 
     //um use state que carrega todas as informações que eu preciso para mostrar os detalhes
     const [detalhe, setDetalhe] = React.useState<detalhes>(inicializado);
+    const [showEditar, setShowEditar] = React.useState(false);
+
+    function handleEditSolicitacao() {
+        setShowEditar(false);
+        setShowToastEdit(true);
+    }
+
 
     return (
         <div className='container-sm p-0'>
             <div className='mt-4 p-1 d-flex flex-column'>
                 <div className="d-flex justify-content-between">
-                <h4 className="pt-1">Solicitações em aberto</h4>
-                <button className="btn border" onClick={ () => setAtualizar(!atualizar) }><GrUpdate /></button>
+                    <h4 className="pt-1">Solicitações em aberto</h4>
+                    <button className="btn border" onClick={() => setAtualizar(!atualizar)}><GrUpdate /></button>
                 </div>
                 <Container className="px-0 mb-2 mt-4">
                     <Row className="historico-cabecalho lead px-2 text-center">
@@ -164,7 +173,7 @@ export function Historico() {
                             placement="top"
                             delay={{ show: 250, hide: 400 }}
                             overlay={dicaBtnApprove}>
-                            <button className="btn btn-light border px-3"><FcCheckmark /></button>
+                            <button className="btn btn-light border px-3" onClick={() => setShowEditar(true)}><BsPencilFill /></button>
                         </OverlayTrigger><OverlayTrigger
                             placement="bottom"
                             delay={{ show: 250, hide: 400 }}
@@ -176,19 +185,51 @@ export function Historico() {
                 </Modal.Body>
                 <Modal.Footer className="d-flex justify-space-between">
 
+                    <ToastContainer position="top-end">
+                        <Toast show={showToastEdit} onClose={() => setShowToastEdit(false)} delay={2000} autohide>
+                            <Toast.Body>Sua alteração não foi salva! (isso ainda não foi implantado)</Toast.Body>
+                        </Toast>
+                    </ToastContainer>
+
                     <Button className="d-flex" onClick={() => setDetalhe({ mostrar: false })}>Fechar</Button>
                 </Modal.Footer>
             </Modal>
             {/* <DetailsModal show={detailShow} onHide={() => setDetailShow(false)} /> */}
-        
+
+            <Modal
+                size="lg"
+                show={showEditar}
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+
+                //o que acontece quando clicamos no 'x', fora da caixa de diálogo ou pressionamos 'esc'
+                onHide={() => setShowEditar(false)}>
+
+                <Modal.Body>
+
+                    <form action="">
+                        <label htmlFor="" className="form-label">Descrição:</label>
+                        <input defaultValue={detalhe.descricao} className=" form-control m-1" type="text" />
+                        <label htmlFor="" className="form-label">Endereço:</label>
+                        <input defaultValue={detalhe.endereco} className="form-control m-1" type="text" />
+                    </form>
+
+                </Modal.Body>
+                <Modal.Footer className="d-flex justify-space-between">
+
+                    <Button className="d-flex" onClick={() => handleEditSolicitacao()}>Salvar</Button>
+                    <Button variant="danger" className="d-flex" onClick={() => setShowEditar(false)}>Cancelar</Button>
+                </Modal.Footer>
+            </Modal>
 
 
             {/* Toast */}
-           <ToastContainer position="middle-center">
-            <Toast show={show} onClose={() => setShow(false)} delay={2000} autohide>
-            <Toast.Body>Solicitação excluída com sucesso!</Toast.Body>
-            </Toast>
+            <ToastContainer position="middle-center">
+                <Toast show={showToastDelete} onClose={() => setShowToastDelete(false)} delay={2000} autohide>
+                    <Toast.Body>Solicitação excluída com sucesso!</Toast.Body>
+                </Toast>
             </ToastContainer>
+
 
         </div>
     )
