@@ -7,6 +7,9 @@ import './inicio.css'
 export default function Inicio() {
 
     //declarando o navigate
+    
+    //por enquanto vamos definir o usuário ativo estaticamente
+    const usuario_ativo:number = 1;
     const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -17,6 +20,8 @@ export default function Inicio() {
         const descricao = (event.target as any).descricao.value;
         const data = new Date().toLocaleString();
         const endereco = (event.target as any).endereco.value;
+        const melhor_dia = (event.target as any).dayOfWeek.value;
+        const melhor_periodo = (event.target as any).periodo.value;
 
 
         if ( endereco == "" || descricao == "") {
@@ -42,7 +47,10 @@ export default function Inicio() {
                     tipo: tipo,
                     descricao: descricao,
                     data: data,
-                    endereco: endereco
+                    endereco: endereco,
+                    melhor_dia: melhor_dia,
+                    melhor_horario: melhor_periodo,
+                    user: usuario_ativo
                 }
             }
 

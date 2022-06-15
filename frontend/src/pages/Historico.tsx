@@ -102,7 +102,7 @@ export function Historico() {
         <div className='container-sm p-0'>
             <div className='mt-4 p-1 d-flex flex-column'>
                 <div className="d-flex justify-content-between">
-                    <h4 className="pt-1">Solicitações em aberto</h4>
+                    <h4 className="pt-1">Minhas solicitações:</h4>
                     <button className="btn border" onClick={() => setAtualizar(!atualizar)}><GrUpdate /></button>
                 </div>
                 <Container className="px-0 mb-2 mt-4">
