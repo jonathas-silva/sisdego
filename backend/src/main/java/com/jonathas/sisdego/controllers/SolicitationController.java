@@ -1,5 +1,6 @@
 package com.jonathas.sisdego.controllers;
 
+import com.jonathas.sisdego.domain.DTO.SolicitacaoDTO;
 import com.jonathas.sisdego.domain.Solicitacao;
 import com.jonathas.sisdego.services.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class SolicitationController {
     }
 
     @PostMapping
-    public ResponseEntity<Solicitacao> saveSolicitation(@RequestBody Solicitacao solicitao){
+    public ResponseEntity<Solicitacao> saveSolicitation(@RequestBody SolicitacaoDTO solicitao){
         Solicitacao created =  service.update(solicitao);
 
         //retornando o objeto criado, inclusive com o seu devido id autogerado

@@ -1,21 +1,10 @@
-package com.jonathas.sisdego.domain;
+package com.jonathas.sisdego.domain.DTO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.jonathas.sisdego.domain.Usuario;
 
-import javax.persistence.*;
-import java.io.Serializable;
+public class SolicitacaoDTO {
 
-@Entity
-public class Solicitacao implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Usuario user;
+    private Long user; //id do usuário
 
     private String tipo;
 
@@ -29,12 +18,11 @@ public class Solicitacao implements Serializable {
 
     private String melhor_horario;
 
-    public Solicitacao(){
+    public SolicitacaoDTO(){
 
     }
 
-    public Solicitacao(Long id, Usuario user, String tipo, String descricao, String data, String endereco, String melhor_dia, String melhor_horario) {
-        this.id = id;
+    public SolicitacaoDTO(Long user, String tipo, String descricao, String data, String endereco, String melhor_dia, String melhor_horario) {
         this.user = user;
         this.tipo = tipo;
         this.descricao = descricao;
@@ -44,12 +32,12 @@ public class Solicitacao implements Serializable {
         this.melhor_horario = melhor_horario;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUser() {
+        return user;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     public String getTipo() {
@@ -84,14 +72,6 @@ public class Solicitacao implements Serializable {
         this.endereco = endereco;
     }
 
-    public Usuario getUser() {
-        return user;
-    }
-
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
-
     public String getMelhor_dia() {
         return melhor_dia;
     }
@@ -108,3 +88,5 @@ public class Solicitacao implements Serializable {
         this.melhor_horario = melhor_horario;
     }
 }
+
+
