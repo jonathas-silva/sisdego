@@ -30,4 +30,5 @@ export type SolicitacaoDTO = {
     endereco: string;
     melhor_dia?: string;
     melhor_horario?: string;
+    estado?: string;
 }

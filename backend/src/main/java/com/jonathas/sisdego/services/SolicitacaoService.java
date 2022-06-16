@@ -45,11 +45,11 @@ public class SolicitacaoService {
         novaSolicitacao.setUser(user);
 
         //Aqui estamos fazendo essa conversão na marra, devido a problemas com função 'toEnum'
-        if(solicitao.getEstado() == 1){
+        if(solicitao.getEstado() == 0){
             novaSolicitacao.setEstado(EstadoSolicitacao.AGUARDANDO);
-        }else if (solicitao.getEstado() == 2){
+        }else if (solicitao.getEstado() == 1){
             novaSolicitacao.setEstado(EstadoSolicitacao.EM_FILA);
-        }else if (solicitao.getEstado() == 3){
+        }else if (solicitao.getEstado() == 2){
             novaSolicitacao.setEstado(EstadoSolicitacao.COLETADO);
         } else{
             throw new IllegalArgumentException("Código de solicitação inválido!");

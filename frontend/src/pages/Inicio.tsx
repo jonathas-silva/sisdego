@@ -7,9 +7,9 @@ import './inicio.css'
 export default function Inicio() {
 
     //declarando o navigate
-    
+
     //por enquanto vamos definir o usuário ativo estaticamente
-    const usuario_ativo:number = 1;
+    const usuario_ativo: number = 1;
     const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -24,7 +24,7 @@ export default function Inicio() {
         const melhor_periodo = (event.target as any).periodo.value;
 
 
-        if ( endereco == "" || descricao == "") {
+        if (endereco == "" || descricao == "") {
             alert("Endereço e descrição não podem ser nulos!");
         } else { //só dispara se os campos não forem nulos. Simples assim. Sem Re-renderização
 
@@ -50,7 +50,8 @@ export default function Inicio() {
                     endereco: endereco,
                     melhor_dia: melhor_dia,
                     melhor_horario: melhor_periodo,
-                    user: usuario_ativo
+                    user: usuario_ativo,
+                    estado: 0 //sempre novas postagens entram com o status 'Aguardando'
                 }
             }
 
@@ -63,7 +64,7 @@ export default function Inicio() {
                     navigate("/historico");
                 }
             )
-           
+
         }
     }
 

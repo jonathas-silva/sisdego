@@ -63,10 +63,10 @@ export function Historico() {
                 setLista(data);
                 console.log(data);
             }
-            
+
         )
         console.log('iteraction');
-        
+
     }, [atualizar]);
 
     function deleteEntry(id: number | undefined) {
@@ -116,11 +116,11 @@ export function Historico() {
                 </div>
                 <Container className="px-0 mb-2 mt-4">
                     <Row className="historico-cabecalho lead px-2 text-center">
-                        <Col sm={1} xs={1} className="text-start">Id</Col><Col sm={2} xs={4}>Data</Col><Col xs={4} sm={6}>Endereço</Col><Col>Tipo</Col>
+                        <Col xs={4} sm={2}>Status</Col><Col xs={4} sm={6} >Data</Col><Col>Tipo</Col>
                     </Row>
                     {
                         lista?.solicitacoes.map(solicitacao => (
-                            
+
                             <Stack key={solicitacao.id}><button className="btn btn-light border"
                                 onClick={() =>
 
@@ -139,9 +139,8 @@ export function Historico() {
 
                                 }>
                                 <Row className="historico-lista">
-                                    <Col sm={1} xs={1} className="text-start">{solicitacao.id}</Col>
-                                    <Col sm={2} xs={4} className="text-truncate">{solicitacao.data}</Col>
-                                    <Col xs={4} sm={6} className="text-truncate">{solicitacao.endereco}</Col>
+                                    <Col xs={4} sm={2} className="text-truncate">{solicitacao.estado}</Col>
+                                    <Col xs={4} sm={6} className="text-truncate">{solicitacao.data}</Col>
                                     <Col className="text-truncate">{solicitacao.tipo}</Col>
                                 </Row></button>
                             </Stack>
