@@ -1,6 +1,7 @@
 package com.jonathas.sisdego.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.jonathas.sisdego.domain.enums.EstadoSolicitacao;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,11 +30,14 @@ public class Solicitacao implements Serializable {
 
     private String melhor_horario;
 
-    public Solicitacao(){
+    //utilizado integer, porém em refatoração futura utilizar Enums
+    private EstadoSolicitacao estado;
+
+    public Solicitacao() {
 
     }
 
-    public Solicitacao(Long id, Usuario user, String tipo, String descricao, String data, String endereco, String melhor_dia, String melhor_horario) {
+    public Solicitacao(Long id, Usuario user, String tipo, String descricao, String data, String endereco, String melhor_dia, String melhor_horario, EstadoSolicitacao estadoSolicitacao) {
         this.id = id;
         this.user = user;
         this.tipo = tipo;
@@ -42,6 +46,7 @@ public class Solicitacao implements Serializable {
         this.endereco = endereco;
         this.melhor_dia = melhor_dia;
         this.melhor_horario = melhor_horario;
+        this.estado = estadoSolicitacao;
     }
 
     public Long getId() {
@@ -54,6 +59,14 @@ public class Solicitacao implements Serializable {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getEstado() {
+        return estado.getDescricao();
+    }
+
+    public void setEstado(EstadoSolicitacao estado) {
+        this.estado = estado;
     }
 
     public void setTipo(String tipo) {

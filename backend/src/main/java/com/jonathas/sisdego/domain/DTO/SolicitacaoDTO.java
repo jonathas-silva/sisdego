@@ -1,7 +1,5 @@
 package com.jonathas.sisdego.domain.DTO;
 
-import com.jonathas.sisdego.domain.Usuario;
-
 public class SolicitacaoDTO {
 
     private Long user; //id do usuário
@@ -18,11 +16,13 @@ public class SolicitacaoDTO {
 
     private String melhor_horario;
 
-    public SolicitacaoDTO(){
+    private Integer estado;
+
+    public SolicitacaoDTO() {
 
     }
 
-    public SolicitacaoDTO(Long user, String tipo, String descricao, String data, String endereco, String melhor_dia, String melhor_horario) {
+    public SolicitacaoDTO(Long user, String tipo, String descricao, String data, String endereco, String melhor_dia, String melhor_horario, Integer estado) {
         this.user = user;
         this.tipo = tipo;
         this.descricao = descricao;
@@ -30,6 +30,7 @@ public class SolicitacaoDTO {
         this.endereco = endereco;
         this.melhor_dia = melhor_dia;
         this.melhor_horario = melhor_horario;
+        this.estado = estado;
     }
 
     public Long getUser() {
@@ -50,6 +51,14 @@ public class SolicitacaoDTO {
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 
     public void setDescricao(String descricao) {

@@ -3,6 +3,7 @@ package com.jonathas.sisdego.services;
 import com.jonathas.sisdego.domain.DTO.SolicitacaoDTO;
 import com.jonathas.sisdego.domain.Solicitacao;
 import com.jonathas.sisdego.domain.Usuario;
+import com.jonathas.sisdego.domain.enums.EstadoSolicitacao;
 import com.jonathas.sisdego.repositories.SolicitacaoRepository;
 import com.jonathas.sisdego.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,18 @@ public class SolicitacaoService {
         novaSolicitacao.setMelhor_dia(solicitao.getMelhor_dia());
         novaSolicitacao.setMelhor_horario(solicitao.getMelhor_horario());
         novaSolicitacao.setUser(user);
+
+        //Aqui estamos fazendo essa conversão na marra, devido a problemas com função 'toEnum'
+        if(solicitao.getEstado() == 1){
+            novaSolicitacao.setEstado(EstadoSolicitacao.AGUARDANDO);
+        }else if (solicitao.getEstado() == 2){
+            novaSolicitacao.setEstado(EstadoSolicitacao.EM_FILA);
+        }else if (solicitao.getEstado() == 3){
+            novaSolicitacao.setEstado(EstadoSolicitacao.COLETADO);
+        } else{
+            throw new IllegalArgumentException("Código de solicitação inválido!");
+        }
+
         return solicitacaoRepository.save(novaSolicitacao);
     }
 
