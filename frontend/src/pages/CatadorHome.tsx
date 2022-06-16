@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Modal, OverlayTrigger, Row, Stack, Toast, ToastContainer, Tooltip, TooltipProps } from "react-bootstrap";
-import {UsuarioDTO } from "../assets/Types";
+import { Button, ButtonGroup, Col, Container, Modal, OverlayTrigger, Row, Stack, Toast, ToastContainer, ToggleButton, Tooltip, TooltipProps } from "react-bootstrap";
+import { UsuarioDTO } from "../assets/Types";
 import './Historico.css';
 import { FaTrashAlt } from 'react-icons/fa';
 import { BsPencilFill } from 'react-icons/bs';
@@ -33,7 +33,17 @@ interface detalhes {
     mostrar: boolean;
 }
 
-export function Historico() {
+export default function CatadorHome() {
+
+
+    //botões de alternância
+
+    const [radioValue, setRadioValue] = useState('1');
+
+    const radios = [
+        { name: 'Todas  ', value: '1' },
+        { name: 'Aceitas', value: '2' },
+    ];
 
 
     const usuario_ativo: number = 2;
@@ -110,7 +120,30 @@ export function Historico() {
         <div className='container-sm p-0'>
             <div className='mt-4 p-1 d-flex flex-column'>
                 <div className="d-flex justify-content-between">
-                    <h4 className="pt-1">Minhas solicitações:</h4>
+
+                    <ButtonGroup>
+                        {
+                            radios.map((radio, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    id={`radio-${idx}`}
+                                    type="radio"
+                                    variant={idx % 2 ? 'outline-success' : 'outline-primary'}
+                                    name="radio"
+                                    value={radio.value}
+                                    checked={radioValue === radio.value}
+                                    onChange={(e) => setRadioValue(e.currentTarget.value)}
+                                >
+                                    {radio.name}
+                                </ToggleButton>
+                            ))
+                            
+                        }
+                    </ButtonGroup>
+
+
+
+
                     <button className="btn border" onClick={() => setAtualizar(!atualizar)}><GrUpdate /></button>
                 </div>
                 <Container className="px-0 mb-2 mt-4">

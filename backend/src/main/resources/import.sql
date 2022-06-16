@@ -1,6 +1,7 @@
 INSERT INTO USUARIO(EMAIL, NOME) VALUES ('cel.jonathas@gmail.com', 'Jonathas Silva');
 INSERT INTO USUARIO(EMAIL, NOME) VALUES ('cel.laura@gmail.com', 'Laura Silva');
 
+INSERT INTO CATADOR(NOME) VALUES ('Oswaldo dos Santos')
 
 INSERT INTO SOLICITACAO(DATA, DESCRICAO, TIPO, ENDERECO, MELHOR_DIA, MELHOR_HORARIO, USER_ID, ESTADO) VALUES ('15/02/2022 14:22:01', 'Sofá em bom estado', 'Móveis', 'Av Paulista, 46', 'Quarta Feira', 'Manhã', 1, 0);
 INSERT INTO SOLICITACAO(DATA, DESCRICAO, TIPO, ENDERECO, MELHOR_DIA, MELHOR_HORARIO, USER_ID, ESTADO) VALUES ('16/02/2022 14:22:01', 'Microondas quebrado', 'Elétrodomésticos', 'Rua 25 de Março, 4562', 'Domingo', 'Manhã', 2, 1);

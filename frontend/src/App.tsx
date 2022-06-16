@@ -7,6 +7,7 @@ import { Historico } from "./pages/Historico";
 import Inicio from "./pages/Inicio";
 import './App.css'
 import Teste from "./pages/testes";
+import CatadorHome from "./pages/CatadorHome";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/historico" element={<Historico />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/testes" element={<Teste />} />
+            <Route path="/catador" element={<CatadorHome />} />
           </Routes>
           <Footer />
         </div>
