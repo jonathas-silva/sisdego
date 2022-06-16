@@ -1,6 +1,7 @@
 package com.jonathas.sisdego.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Solicitacao> solicitacoes = new ArrayList<>();
 

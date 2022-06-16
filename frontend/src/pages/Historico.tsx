@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Modal, ModalProps, OverlayTrigger, Row, Stack, Toast, ToastContainer, Tooltip, TooltipProps } from "react-bootstrap";
-import { Solicitacao } from "../assets/Types";
+import { Solicitacao, UsuarioDTO } from "../assets/Types";
 import './Historico.css';
 import { FcCheckmark } from 'react-icons/fc';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -29,15 +29,21 @@ interface detalhes {
     descricao?: string;
     data?: string;
     endereco?: string;
+    melhor_dia?: string;
+    melhor_horario?: string;
     mostrar: boolean;
 }
 
 export function Historico() {
+
+
+    const usuario_ativo: number = 2;
+
     const inicializado: detalhes = {
         mostrar: false
     }
 
-    const [lista, setLista] = useState<Solicitacao[]>();
+    const [lista, setLista] = useState<UsuarioDTO>();
 
     const [showToastDelete, setShowToastDelete] = useState(false);
     const [showToastEdit, setShowToastEdit] = useState(false);
@@ -50,14 +56,17 @@ export function Historico() {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8080/solicitacoes/").then(
+        //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
+        axios.get(`http://localhost:8080/usuarios/${usuario_ativo}`).then(
             response => {
-                const data = response.data as Solicitacao[];
+                const data = response.data as UsuarioDTO;
                 setLista(data);
+                console.log(data);
             }
-
+            
         )
         console.log('iteraction');
+        
     }, [atualizar]);
 
     function deleteEntry(id: number | undefined) {
@@ -110,19 +119,19 @@ export function Historico() {
                         <Col sm={1} xs={1} className="text-start">Id</Col><Col sm={2} xs={4}>Data</Col><Col xs={4} sm={6}>Endereço</Col><Col>Tipo</Col>
                     </Row>
                     {
-                        lista?.map(lista => (
-
-                            <Stack key={lista.id}><button className="btn btn-light border"
+                        lista?.solicitacoes.map(solicitacao => (
+                            
+                            <Stack key={solicitacao.id}><button className="btn btn-light border"
                                 onClick={() =>
 
                                     //inserindo os detalhes que serão mostrados no Modal
                                     setDetalhe(
                                         {
-                                            id: lista.id,
-                                            tipo: lista.tipo,
-                                            descricao: lista.descricao,
-                                            data: lista.data,
-                                            endereco: lista.endereco,
+                                            id: solicitacao.id,
+                                            tipo: solicitacao.tipo,
+                                            descricao: solicitacao.descricao,
+                                            data: solicitacao.data,
+                                            endereco: solicitacao.endereco,
                                             mostrar: true
                                         }
                                     )
@@ -130,10 +139,10 @@ export function Historico() {
 
                                 }>
                                 <Row className="historico-lista">
-                                    <Col sm={1} xs={1} className="text-start">{lista.id}</Col>
-                                    <Col sm={2} xs={4} className="text-truncate">{lista.data}</Col>
-                                    <Col xs={4} sm={6} className="text-truncate">{lista.endereco}</Col>
-                                    <Col className="text-truncate">{lista.tipo}</Col>
+                                    <Col sm={1} xs={1} className="text-start">{solicitacao.id}</Col>
+                                    <Col sm={2} xs={4} className="text-truncate">{solicitacao.data}</Col>
+                                    <Col xs={4} sm={6} className="text-truncate">{solicitacao.endereco}</Col>
+                                    <Col className="text-truncate">{solicitacao.tipo}</Col>
                                 </Row></button>
                             </Stack>
                         ))

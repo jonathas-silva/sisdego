@@ -4,6 +4,13 @@ export type Usuario = {
     email: string;
 }
 
+export type UsuarioDTO = {
+    id: number;
+    solicitacoes: SolicitacaoDTO[];
+    nome: string;
+    email: string;
+}
+
 export type Solicitacao = {
     id: number;
     user: Usuario;
@@ -16,7 +23,7 @@ export type Solicitacao = {
 }
 
 export type SolicitacaoDTO = {
-    user: number; //passar apenas o número da id do usuário
+    id: number; //passar apenas o número da id do usuário
     tipo: string;
     descricao: string;
     data: string;
