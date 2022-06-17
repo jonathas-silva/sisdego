@@ -36,7 +36,7 @@ interface detalhes {
 export function Historico() {
 
 
-    const usuario_ativo: number = 2;
+    const catador_ativo: number = 1;
 
     const inicializado: detalhes = {
         mostrar: false
@@ -56,7 +56,7 @@ export function Historico() {
 
     useEffect(() => {
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
-        axios.get(`http://localhost:8080/usuarios/${usuario_ativo}`).then(
+        axios.get(`http://localhost:8080/usuarios/${catador_ativo}`).then(
             response => {
                 const data = response.data as UsuarioDTO;
                 setLista(data);

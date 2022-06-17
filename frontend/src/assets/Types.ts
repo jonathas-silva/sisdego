@@ -30,5 +30,11 @@ export type SolicitacaoDTO = {
     endereco: string;
     melhor_dia?: string;
     melhor_horario?: string;
-    estado?: string;
+    estado?: number;
+}
+
+export type CatadorDTO = {
+    id: number;
+    solicitacoes: SolicitacaoDTO[];
+    nome: string;
 }

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup, Col, Container, Modal, OverlayTrigger, Row, Stack, Toast, ToastContainer, ToggleButton, Tooltip, TooltipProps } from "react-bootstrap";
-import { UsuarioDTO } from "../assets/Types";
+import { CatadorDTO, SolicitacaoDTO} from "../assets/Types";
 import './Historico.css';
-import { FaTrashAlt } from 'react-icons/fa';
-import { BsPencilFill } from 'react-icons/bs';
+import { RiInboxUnarchiveLine } from 'react-icons/ri';
 import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosRequestConfig } from "axios";
 
@@ -11,12 +10,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const dicaBtnApprove = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
     <Tooltip id="button-tooltip" {...props}>
-        Editar solicitação
-    </Tooltip>
-);
-const dicaBtnCancel = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
-    <Tooltip id="button-tooltip" {...props}>
-        Deletar solicitação
+        Aceitar Solicitação
     </Tooltip>
 );
 
@@ -30,6 +24,7 @@ interface detalhes {
     endereco?: string;
     melhor_dia?: string;
     melhor_horario?: string;
+    estado?: number;
     mostrar: boolean;
 }
 
@@ -40,22 +35,21 @@ export default function CatadorHome() {
 
     const [radioValue, setRadioValue] = useState('1');
 
+    const catador_ativo: number = 1;
+    const [endereco, setEndereco] = useState('solicitacoes');
+
     const radios = [
         { name: 'Todas  ', value: '1' },
         { name: 'Aceitas', value: '2' },
     ];
 
 
-    const usuario_ativo: number = 2;
 
     const inicializado: detalhes = {
         mostrar: false
     }
 
-    const [lista, setLista] = useState<UsuarioDTO>();
-
     const [showToastDelete, setShowToastDelete] = useState(false);
-    const [showToastEdit, setShowToastEdit] = useState(false);
 
 
     /*useState utilizado para controlar a atualização do DB. Dado que o useEffect está
@@ -63,214 +57,194 @@ export default function CatadorHome() {
     gerar uma nova leitura*/
     const [atualizar, setAtualizar] = useState(true);
 
+    const [solicArray, setSolicArray] = useState<SolicitacaoDTO[]>();
 
     useEffect(() => {
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
-        axios.get(`http://localhost:8080/usuarios/${usuario_ativo}`).then(
-            response => {
-                const data = response.data as UsuarioDTO;
-                setLista(data);
-                console.log(data);
-            }
+        if (radioValue == '1') {
+            axios.get(`http://localhost:8080/${endereco}`).then(
+                response => {
+                    const data = response.data as SolicitacaoDTO[];
+                    setSolicArray(data);
+                    console.log(solicArray);
+                }
+            )
+        } else {
+            axios.get(`http://localhost:8080/catadores/${catador_ativo}`).then(
+                response => {
+                    const data = response.data as CatadorDTO;
+                    setSolicArray(data.solicitacoes);
+                    console.log(solicArray);
+                }
+            )
+        }
 
-        )
+
         console.log('iteraction');
 
     }, [atualizar]);
 
-    function deleteEntry(id: number | undefined) {
+    function atualizaHistorico(e) {
+        setRadioValue(e.currentTarget.value);
+        setAtualizar(!atualizar); //força a atualização do backend
+    }
 
+    function aceitarSolic(novaSolicitacao: detalhes) {
+        console.log('tentando enviar');
         const config: AxiosRequestConfig = {
             baseURL: 'http://localhost:8080',
-            method: 'DELETE',
-            url: `solicitacoes/${id}`
+            method: 'PUT',
+            url: `/catadores/${catador_ativo}`,
+            data: {
+                id: novaSolicitacao.id,
+                tipo: novaSolicitacao.tipo,
+                descricao: novaSolicitacao.descricao,
+                data: novaSolicitacao.data,
+                endereco: novaSolicitacao.endereco,
+                melhor_dia: novaSolicitacao.melhor_dia,
+                melhor_horario: novaSolicitacao.melhor_horario,
+                estado: 1 //Aceites novos sempre mudarão o status para 'em fila'
+            }
         }
 
         axios(config).then(
             response => {
                 console.log(response.status);
-                setAtualizar(!atualizar); //está atualizando apenas depois que a resposta é recebida
-                setShowToastDelete(true);
+                alert("Solicitação aceita com sucesso!");
+                setDetalhe({ mostrar: false });
             }
         )
-
-        //usando o useEffect para atualizar a leitura do banco de dados
-
-
-        //utilizado para fechar o Modal
-        setDetalhe({ mostrar: false });
     }
 
 
 
+        //um use state que carrega todas as informações que eu preciso para mostrar os detalhes
+        const [detalhe, setDetalhe] = React.useState<detalhes>(inicializado);
+
+
+        return (
+            <div className='container-sm p-0'>
+                <div className='mt-4 p-1 d-flex flex-column'>
+                    <div className="d-flex justify-content-between">
+
+                        <ButtonGroup>
+                            {
+                                radios.map((radio, idx) => (
+                                    <ToggleButton
+                                        key={idx}
+                                        id={`radio-${idx}`}
+                                        type="radio"
+                                        variant={idx % 2 ? 'outline-success' : 'outline-primary'}
+                                        name="radio"
+                                        value={radio.value}
+                                        checked={radioValue === radio.value}
+                                        onChange={(e) => atualizaHistorico(e)}
+                                    >
+                                        {radio.name}
+                                    </ToggleButton>
+                                ))
+
+                            }
+                        </ButtonGroup>
 
 
 
-    //um use state que carrega todas as informações que eu preciso para mostrar os detalhes
-    const [detalhe, setDetalhe] = React.useState<detalhes>(inicializado);
-    const [showEditar, setShowEditar] = React.useState(false);
 
-    function handleEditSolicitacao() {
-        setShowEditar(false);
-        setShowToastEdit(true);
-    }
-
-
-    return (
-        <div className='container-sm p-0'>
-            <div className='mt-4 p-1 d-flex flex-column'>
-                <div className="d-flex justify-content-between">
-
-                    <ButtonGroup>
+                        <button className="btn border" onClick={() => setAtualizar(!atualizar)}><GrUpdate /></button>
+                    </div>
+                    <Container className="px-0 mb-2 mt-4">
+                        <Row className="historico-cabecalho lead px-2 text-center">
+                            <Col xs={4} sm={2}>Status</Col><Col xs={4} sm={6} >Data</Col><Col>Tipo</Col>
+                        </Row>
                         {
-                            radios.map((radio, idx) => (
-                                <ToggleButton
-                                    key={idx}
-                                    id={`radio-${idx}`}
-                                    type="radio"
-                                    variant={idx % 2 ? 'outline-success' : 'outline-primary'}
-                                    name="radio"
-                                    value={radio.value}
-                                    checked={radioValue === radio.value}
-                                    onChange={(e) => setRadioValue(e.currentTarget.value)}
-                                >
-                                    {radio.name}
-                                </ToggleButton>
+                            solicArray?.map(solicitacao => (
+
+                                <Stack key={solicitacao.id}><button className="btn btn-light border"
+                                    onClick={() =>
+
+                                        //inserindo os detalhes que serão mostrados no Modal
+                                        setDetalhe(
+                                            {//Montando o DTO para enviar no aceite
+                                                id: solicitacao.id,
+                                                tipo: solicitacao.tipo,
+                                                descricao: solicitacao.descricao,
+                                                data: solicitacao.data,
+                                                endereco: solicitacao.endereco,
+                                                mostrar: true,
+                                                melhor_dia: solicitacao.melhor_dia,
+                                                melhor_horario: solicitacao.melhor_horario,
+                                                estado: solicitacao.estado
+                                            }
+                                        )
+
+
+                                    }>
+                                    <Row className="historico-lista">
+                                        <Col xs={4} sm={2} className="text-truncate">{solicitacao.estado}</Col>
+                                        <Col xs={4} sm={6} className="text-truncate">{solicitacao.data}</Col>
+                                        <Col className="text-truncate">{solicitacao.tipo}</Col>
+                                    </Row></button>
+                                </Stack>
                             ))
-                            
+
                         }
-                    </ButtonGroup>
 
 
+                    </Container>
 
-
-                    <button className="btn border" onClick={() => setAtualizar(!atualizar)}><GrUpdate /></button>
                 </div>
-                <Container className="px-0 mb-2 mt-4">
-                    <Row className="historico-cabecalho lead px-2 text-center">
-                        <Col xs={4} sm={2}>Status</Col><Col xs={4} sm={6} >Data</Col><Col>Tipo</Col>
-                    </Row>
-                    {
-                        lista?.solicitacoes.map(solicitacao => (
 
-                            <Stack key={solicitacao.id}><button className="btn btn-light border"
-                                onClick={() =>
+                <Modal
+                    size="lg"
+                    show={detalhe.mostrar}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
 
-                                    //inserindo os detalhes que serão mostrados no Modal
-                                    setDetalhe(
-                                        {
-                                            id: solicitacao.id,
-                                            tipo: solicitacao.tipo,
-                                            descricao: solicitacao.descricao,
-                                            data: solicitacao.data,
-                                            endereco: solicitacao.endereco,
-                                            mostrar: true
-                                        }
-                                    )
+                    //o que acontece quando clicamos no 'x', fora da caixa de diálogo ou pressionamos 'esc'
+                    onHide={() => setDetalhe({ mostrar: false })}
+                >
+
+                    <Modal.Header closeButton>
+                        <Modal.Title>
+                            {detalhe.tipo}
+                        </Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <div>
+                            <p className="fw-light">Criado em {detalhe.data}</p>
+                            <p>{detalhe.descricao}</p>
+                            <p>Endereço: {detalhe.endereco}</p>
+                            <p>Status: {detalhe.estado}</p>
+                        </div>
+                        <div className="text-start">
+                            {/* inserção de dica sobre o botão*/}
+                            <OverlayTrigger
+                                placement="top"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={dicaBtnApprove}>
+                                <button className="btn btn-success border px-3" onClick={() => aceitarSolic(detalhe)}>Aceitar solicitação <RiInboxUnarchiveLine /></button>
+                            </OverlayTrigger>
+                        </div>
+
+                    </Modal.Body>
+                    <Modal.Footer className="d-flex justify-space-between">
+
+                        <Button className="d-flex" onClick={() => setDetalhe({ mostrar: false })}>Fechar</Button>
+                    </Modal.Footer>
+                </Modal>
+                {/* <DetailsModal show={detailShow} onHide={() => setDetailShow(false)} /> */}
 
 
-                                }>
-                                <Row className="historico-lista">
-                                    <Col xs={4} sm={2} className="text-truncate">{solicitacao.estado}</Col>
-                                    <Col xs={4} sm={6} className="text-truncate">{solicitacao.data}</Col>
-                                    <Col className="text-truncate">{solicitacao.tipo}</Col>
-                                </Row></button>
-                            </Stack>
-                        ))
+                {/* Toast */}
+                <ToastContainer position="middle-center">
+                    <Toast show={showToastDelete} onClose={() => setShowToastDelete(false)} delay={2000} autohide>
+                        <Toast.Body>Solicitação excluída com sucesso!</Toast.Body>
+                    </Toast>
+                </ToastContainer>
 
-                    }
-
-
-                </Container>
 
             </div>
-
-            <Modal
-                size="lg"
-                show={detalhe.mostrar}
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-
-                //o que acontece quando clicamos no 'x', fora da caixa de diálogo ou pressionamos 'esc'
-                onHide={() => setDetalhe({ mostrar: false })}
-            >
-
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        {detalhe.tipo}
-                    </Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <div>
-                        <p className="fw-light">Criado em {detalhe.data}</p>
-                        <p>{detalhe.descricao}</p>
-                        <p>Endereço: {detalhe.endereco}</p>
-                    </div>
-                    <div className="text-start">
-                        {/* inserção de dica sobre o botão*/}
-                        <OverlayTrigger
-                            placement="top"
-                            delay={{ show: 250, hide: 400 }}
-                            overlay={dicaBtnApprove}>
-                            <button className="btn btn-light border px-3" onClick={() => setShowEditar(true)}><BsPencilFill /></button>
-                        </OverlayTrigger><OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 250, hide: 400 }}
-                            overlay={dicaBtnCancel}>
-                            <button className="btn btn-light border px-3" onClick={() => deleteEntry(detalhe.id)}><FaTrashAlt /></button>
-                        </OverlayTrigger>
-                    </div>
-
-                </Modal.Body>
-                <Modal.Footer className="d-flex justify-space-between">
-
-                    <ToastContainer position="top-end">
-                        <Toast show={showToastEdit} onClose={() => setShowToastEdit(false)} delay={2000} autohide>
-                            <Toast.Body>Sua alteração não foi salva! (isso ainda não foi implantado)</Toast.Body>
-                        </Toast>
-                    </ToastContainer>
-
-                    <Button className="d-flex" onClick={() => setDetalhe({ mostrar: false })}>Fechar</Button>
-                </Modal.Footer>
-            </Modal>
-            {/* <DetailsModal show={detailShow} onHide={() => setDetailShow(false)} /> */}
-
-            <Modal
-                size="lg"
-                show={showEditar}
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-
-                //o que acontece quando clicamos no 'x', fora da caixa de diálogo ou pressionamos 'esc'
-                onHide={() => setShowEditar(false)}>
-
-                <Modal.Body>
-
-                    <form action="">
-                        <label htmlFor="" className="form-label">Descrição:</label>
-                        <input defaultValue={detalhe.descricao} className=" form-control m-1" type="text" />
-                        <label htmlFor="" className="form-label">Endereço:</label>
-                        <input defaultValue={detalhe.endereco} className="form-control m-1" type="text" />
-                    </form>
-
-                </Modal.Body>
-                <Modal.Footer className="d-flex justify-space-between">
-
-                    <Button className="d-flex" onClick={() => handleEditSolicitacao()}>Salvar</Button>
-                    <Button variant="danger" className="d-flex" onClick={() => setShowEditar(false)}>Cancelar</Button>
-                </Modal.Footer>
-            </Modal>
-
-
-            {/* Toast */}
-            <ToastContainer position="middle-center">
-                <Toast show={showToastDelete} onClose={() => setShowToastDelete(false)} delay={2000} autohide>
-                    <Toast.Body>Solicitação excluída com sucesso!</Toast.Body>
-                </Toast>
-            </ToastContainer>
-
-
-        </div>
-    )
+        )
+    
 }

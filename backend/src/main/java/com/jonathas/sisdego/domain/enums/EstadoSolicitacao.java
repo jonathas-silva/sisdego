@@ -31,5 +31,4 @@ public enum EstadoSolicitacao {
         }
         throw new IllegalArgumentException("Código de solicitação inválido!");
     }
-
 }

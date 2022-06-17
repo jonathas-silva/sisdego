@@ -34,7 +34,7 @@ public class Solicitacao implements Serializable {
     private EstadoSolicitacao estado;
 
     public Solicitacao() {
-
+        
     }
 
     public Solicitacao(Long id, Usuario user, String tipo, String descricao, String data, String endereco, String melhor_dia, String melhor_horario, EstadoSolicitacao estadoSolicitacao) {
