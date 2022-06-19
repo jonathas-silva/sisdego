@@ -30,11 +30,12 @@ public class CatadorController {
         return ResponseEntity.ok().body(service.findById(id));
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> inserirSolicitacao(@RequestBody Solicitacao solicitacao, @PathVariable Long id){
-        Catador created = service.inserirSolicitacao(solicitacao, id);
-        return ResponseEntity.ok().build();
+    @PutMapping(value = "/{idCatador}")
+    public ResponseEntity<Catador> inserirSolicitacao(@PathVariable Long idCatador, @RequestParam Long idSolicitacao){
+        Catador created = service.inserirSolicitacao(idSolicitacao, idCatador);
+        return ResponseEntity.ok(created);
     }
-
+    //Vamos testar o uso do requestParam, em detrimento do request Body. Neste caso, como não estamos usando um tipo específico
+    //aparentemente é a melhor solução
 
 }
