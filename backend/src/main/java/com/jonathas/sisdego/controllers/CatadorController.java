@@ -38,4 +38,10 @@ public class CatadorController {
     //Vamos testar o uso do requestParam, em detrimento do request Body. Neste caso, como não estamos usando um tipo específico
     //aparentemente é a melhor solução
 
+    @DeleteMapping(value = "/{idCatador}")
+    public ResponseEntity<Void> deletarSolicitacao(@PathVariable Long idCatador, @RequestParam Long idSolicitacao){
+        service.deletarSolicitacao(idSolicitacao, idCatador);
+        return ResponseEntity.noContent().build();
+    }
+
 }

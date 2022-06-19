@@ -47,6 +47,10 @@ public class Catador implements Serializable {
         this.solicitacoes.add(solicitacoes);
     }
 
+    public boolean deleteSolicitacoes(Solicitacao solicitacao) {
+         return this.solicitacoes.remove(solicitacao);
+    }
+
     public String getNome() {
         return nome;
     }

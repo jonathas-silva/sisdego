@@ -2,6 +2,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../assets/Keys';
 import './inicio.css'
 
 export default function Inicio() {
@@ -40,7 +41,7 @@ export default function Inicio() {
 
             //Configuração do método POST
             const config: AxiosRequestConfig = {
-                baseURL: 'http://localhost:8080',
+                baseURL: `${BASE_URL}`,
                 method: 'POST',
                 url: '/solicitacoes',
                 data: {

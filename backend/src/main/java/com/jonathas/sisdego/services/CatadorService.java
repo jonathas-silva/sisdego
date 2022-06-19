@@ -40,4 +40,13 @@ public class CatadorService {
         catador.setSolicitacoes(solicitacao);
         return catadorRepository.save(catador);
     }
+
+    public Catador deletarSolicitacao(Long idSolicitacao, Long idCatador) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(idSolicitacao).get();
+        solicitacao.setEstado(EstadoSolicitacao.AGUARDANDO); //muda o status da solicitação
+        solicitacaoRepository.save(solicitacao); //Salva a solicitação alterada
+        Catador catador = catadorRepository.findById(idCatador).get();
+        catador.deleteSolicitacoes(solicitacao); //deleta a referida solicitação da lista de solicitações do catador
+        return catadorRepository.save(catador); //salva o catador alterado
+    }
 }

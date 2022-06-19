@@ -6,6 +6,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { BsPencilFill } from 'react-icons/bs';
 import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosRequestConfig } from "axios";
+import { BASE_URL } from "../assets/Keys";
 
 
 
@@ -56,7 +57,7 @@ export function Historico() {
 
     useEffect(() => {
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
-        axios.get(`http://localhost:8080/usuarios/${catador_ativo}`).then(
+        axios.get(`${BASE_URL}/usuarios/${catador_ativo}`).then(
             response => {
                 const data = response.data as UsuarioDTO;
                 setLista(data);
@@ -71,7 +72,7 @@ export function Historico() {
     function deleteEntry(id: number | undefined) {
 
         const config: AxiosRequestConfig = {
-            baseURL: 'http://localhost:8080',
+            baseURL: `${BASE_URL}`,
             method: 'DELETE',
             url: `solicitacoes/${id}`
         }

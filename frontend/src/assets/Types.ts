@@ -30,7 +30,7 @@ export type SolicitacaoDTO = {
     endereco: string;
     melhor_dia?: string;
     melhor_horario?: string;
-    estado?: number;
+    estado?: string;
 }
 
 export type CatadorDTO = {

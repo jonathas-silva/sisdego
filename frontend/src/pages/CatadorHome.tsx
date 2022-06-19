@@ -5,6 +5,7 @@ import './Historico.css';
 import { RiInboxUnarchiveLine } from 'react-icons/ri';
 import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import { BASE_URL } from "../assets/Keys";
 
 
 
@@ -24,7 +25,7 @@ interface detalhes {
     endereco?: string;
     melhor_dia?: string;
     melhor_horario?: string;
-    estado?: number;
+    estado?: string;
     mostrar: number; //de 0 a 2 - 0 - não mostrar, 1 - mostrar quando está adicionado// 2 - mostrar quando está em fila
 }
 
@@ -57,15 +58,15 @@ export default function CatadorHome() {
     useEffect(() => {
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
         if (radioValue == '1') {
-            axios.get(`http://localhost:8080/${endereco}`).then(
+            axios.get(`${BASE_URL}/${endereco}`).then(
                 response => {
                     const data = response.data as SolicitacaoDTO[];
                     setSolicArray(data);
                     console.log(solicArray);
-                }
+                }   
             )
         } else {
-            axios.get(`http://localhost:8080/catadores/${catador_ativo}`).then(
+            axios.get(`${BASE_URL}/catadores/${catador_ativo}`).then(
                 response => {
                     const data = response.data as CatadorDTO;
                     setSolicArray(data.solicitacoes);
@@ -87,7 +88,7 @@ export default function CatadorHome() {
     function aceitarSolic(idSolicitacao: number | undefined) {
         console.log('tentando enviar');
         const config: AxiosRequestConfig = {
-            baseURL: 'http://localhost:8080',
+            baseURL: `${BASE_URL}`,
             method: 'PUT',
             url: `/catadores/${catador_ativo}?idSolicitacao=${idSolicitacao}`
         }
@@ -108,6 +109,24 @@ export default function CatadorHome() {
 
     }
 
+    function concluirSolicitacao(id: number) {
+        //Essa função precisa primeiro atualizar a entrada do catador, tirando dele essa atribuição,
+        //e depois deletar a solicitação do banco de dados, nessa ordem para não ferir as regras de FK
+
+        
+    }
+
+    function DevolverSolicitacao(id: number) {
+        //Essa função muda o status da solicitação para 'Aguardando'
+        axios.delete(`${BASE_URL}/catadores/${catador_ativo}?idSolicitacao=${id}`).then(
+            response => {
+                alert("Solicitação Concluída com sucesso! Ela será removida da lista de solicitações");
+                setAtualizar(!atualizar);
+                setDetalhe({mostrar: 0});
+            }
+            
+        ) 
+    }
 
 
 
@@ -167,7 +186,7 @@ export default function CatadorHome() {
                                             melhor_dia: solicitacao.melhor_dia,
                                             melhor_horario: solicitacao.melhor_horario,
                                             estado: solicitacao.estado,
-                                            mostrar: solicitacao.estado === 0 ? 1 : 2    
+                                            mostrar: solicitacao.estado == "Em fila de coleta" ? 2 : 1    
                                         }
                                     )
 
@@ -243,13 +262,19 @@ export default function CatadorHome() {
 
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {detalhe.tipo}
+                        Solitação nº {detalhe.id}
                     </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                     <div>
-                        O barato é loko
+                    <p>{detalhe.descricao}</p>
+                    <p>{detalhe.endereco}</p>
+                    Essa solicitação já foi aceita. O que deseja fazer?
+                    </div>
+                    <div className="mt-2">
+                        <button className="btn btn-info mx-1" onClick={() => concluirSolicitacao(detalhe.id)}>Concluir</button>
+                        <button className="btn btn-danger" onClick={() => DevolverSolicitacao(detalhe.id)}>Devolver à lista</button>
                     </div>
 
                 </Modal.Body>
