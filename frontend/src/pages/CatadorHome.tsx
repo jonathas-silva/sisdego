@@ -110,8 +110,16 @@ export default function CatadorHome() {
     }
 
     function concluirSolicitacao(id: number) {
-        //Essa função precisa primeiro atualizar a entrada do catador, tirando dele essa atribuição,
-        //e depois deletar a solicitação do banco de dados, nessa ordem para não ferir as regras de FK
+        //aqui precisamos deletar a solicitação do catador,
+        //e depois deletar do banco de dados
+
+        axios.delete(`${BASE_URL}/catadores/concluir/${catador_ativo}?idSolicitacao=${id}`).then(
+            response => {
+                alert ("Solicitação Concluída com sucesso! Ela será removida da lista de solicitações");
+                setAtualizar(!atualizar);
+                setDetalhe({mostrar: 0});
+            }
+        )
 
         
     }
@@ -120,7 +128,7 @@ export default function CatadorHome() {
         //Essa função muda o status da solicitação para 'Aguardando'
         axios.delete(`${BASE_URL}/catadores/${catador_ativo}?idSolicitacao=${id}`).then(
             response => {
-                alert("Solicitação Concluída com sucesso! Ela será removida da lista de solicitações");
+                alert("Solicitação devolvida à lista de solicitações disponíveis");
                 setAtualizar(!atualizar);
                 setDetalhe({mostrar: 0});
             }

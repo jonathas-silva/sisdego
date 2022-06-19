@@ -4,6 +4,7 @@ import com.jonathas.sisdego.domain.Catador;
 import com.jonathas.sisdego.domain.Solicitacao;
 import com.jonathas.sisdego.domain.Usuario;
 import com.jonathas.sisdego.services.CatadorService;
+import com.jonathas.sisdego.services.SolicitacaoService;
 import com.jonathas.sisdego.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class CatadorController {
 
     @Autowired
     private CatadorService service;
+
+    @Autowired
+    private SolicitacaoService solicitacaoService;
 
     @GetMapping
     public ResponseEntity<List<Catador>> listAll(){
@@ -41,6 +45,13 @@ public class CatadorController {
     @DeleteMapping(value = "/{idCatador}")
     public ResponseEntity<Void> deletarSolicitacao(@PathVariable Long idCatador, @RequestParam Long idSolicitacao){
         service.deletarSolicitacao(idSolicitacao, idCatador);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = "/concluir/{idCatador}")
+    public ResponseEntity<Void> devolverSolicitacao(@PathVariable Long idCatador, @RequestParam Long idSolicitacao){
+        service.deletarSolicitacao(idSolicitacao, idCatador);
+        solicitacaoService.delete(idSolicitacao);
         return ResponseEntity.noContent().build();
     }
 

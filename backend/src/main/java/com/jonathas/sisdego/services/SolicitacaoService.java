@@ -1,15 +1,18 @@
 package com.jonathas.sisdego.services;
 
+import com.jonathas.sisdego.domain.Catador;
 import com.jonathas.sisdego.domain.DTO.SolicitacaoDTO;
 import com.jonathas.sisdego.domain.Solicitacao;
 import com.jonathas.sisdego.domain.Usuario;
 import com.jonathas.sisdego.domain.enums.EstadoSolicitacao;
+import com.jonathas.sisdego.repositories.CatadorRepository;
 import com.jonathas.sisdego.repositories.SolicitacaoRepository;
 import com.jonathas.sisdego.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +22,13 @@ public class SolicitacaoService {
     private SolicitacaoRepository solicitacaoRepository;
 
     @Autowired
+    private CatadorRepository catadorRepository;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CatadorService catadorService;
 
     @Transactional(readOnly = true)
     public Solicitacao findById(Long id) {
@@ -59,6 +68,6 @@ public class SolicitacaoService {
     }
 
     public void delete(Long id) {
-        solicitacaoRepository.deleteById(id);
+           solicitacaoRepository.deleteById(id);
     }
 }
