@@ -20,6 +20,11 @@ const dicaBtnCancel = (props: JSX.IntrinsicAttributes & TooltipProps & React.Ref
         Deletar solicitação
     </Tooltip>
 );
+const SolicitacaoAlterada = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
+    <Tooltip id="button-tooltip" {...props}>
+        Solicitação alterada!
+    </Tooltip>
+);
 
 
 //Interface com parâmetros opcionais
@@ -37,7 +42,7 @@ interface detalhes {
 export function Historico() {
 
 
-    const catador_ativo: number = 1;
+    const usuario_ativo: number = 1;
 
     const inicializado: detalhes = {
         mostrar: false
@@ -45,7 +50,9 @@ export function Historico() {
 
     const [lista, setLista] = useState<UsuarioDTO>();
 
+    //CONTROLE DOS TOASTS
     const [showToastDelete, setShowToastDelete] = useState(false);
+    const [showToastUpdate, setShowToastUpdate] = useState(false);
     const [showToastEdit, setShowToastEdit] = useState(false);
 
 
@@ -57,7 +64,7 @@ export function Historico() {
 
     useEffect(() => {
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
-        axios.get(`${BASE_URL}/usuarios/${catador_ativo}`).then(
+        axios.get(`${BASE_URL}/usuarios/${usuario_ativo}`).then(
             response => {
                 const data = response.data as UsuarioDTO;
                 setLista(data);
@@ -70,6 +77,8 @@ export function Historico() {
     }, [atualizar]);
 
     function deleteEntry(id: number | undefined) {
+
+        //ATUALIZAR FUNÇÃO PARA CONSIDERAR DELEÇÃO QUANDO A SOLICITAÇÃO JÁ FOI ACEITA
 
         const config: AxiosRequestConfig = {
             baseURL: `${BASE_URL}`,
@@ -101,10 +110,43 @@ export function Historico() {
     const [detalhe, setDetalhe] = React.useState<detalhes>(inicializado);
     const [showEditar, setShowEditar] = React.useState(false);
 
-    function handleEditSolicitacao() {
-        setShowEditar(false);
-        setShowToastEdit(true);
-    }
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+        event.preventDefault();
+
+        const id = (event.target as any).primaryKey.value;        
+        const tipo = (event.target as any).tipo.value;
+        const descricao = (event.target as any).descricao.value;
+        const endereco = (event.target as any).endereco.value;
+        const melhor_dia = (event.target as any).dayOfWeek.value;
+        const melhor_periodo = (event.target as any).periodo.value;
+
+        if (endereco == "" || descricao == "") {
+            alert("Endereço e descrição não podem ser nulos!");
+        } else {
+            const config: AxiosRequestConfig = {
+                baseURL: `${BASE_URL}`,
+                method: 'PUT',
+                url: `/solicitacoes/${id}`,
+                data: {
+                    tipo: tipo,
+                    descricao: descricao,
+                    endereco: endereco,
+                    melhor_dia: melhor_dia,
+                    melhor_horario: melhor_periodo
+                }
+            }
+            axios(config).then(
+                response => {
+                    console.log(response.status);
+                    console.log(response.data);
+                    setShowToastUpdate(true);
+                    setAtualizar(!atualizar);
+                    setShowEditar(false);
+                    setDetalhe({ mostrar: false });
+                }
+            )
+        }}
 
 
     return (
@@ -132,6 +174,8 @@ export function Historico() {
                                             descricao: solicitacao.descricao,
                                             data: solicitacao.data,
                                             endereco: solicitacao.endereco,
+                                            melhor_dia: solicitacao.melhor_dia,
+                                            melhor_horario: solicitacao.melhor_horario,
                                             mostrar: true
                                         }
                                     )
@@ -174,6 +218,8 @@ export function Historico() {
                         <p className="fw-light">Criado em {detalhe.data}</p>
                         <p>{detalhe.descricao}</p>
                         <p>Endereço: {detalhe.endereco}</p>
+                        <p>Melhor dia: {detalhe.melhor_dia}</p>
+                        <p>Melhor horário: {detalhe.melhor_horario}</p>
                     </div>
                     <div className="text-start">
                         {/* inserção de dica sobre o botão*/}
@@ -212,20 +258,59 @@ export function Historico() {
 
                 //o que acontece quando clicamos no 'x', fora da caixa de diálogo ou pressionamos 'esc'
                 onHide={() => setShowEditar(false)}>
-
+                <Modal.Header >
+                    <Modal.Title>
+                        Editar solicitação {detalhe.id}
+                    </Modal.Title>
+                </Modal.Header>
                 <Modal.Body>
 
-                    <form action="">
+                    <form onSubmit={handleSubmit}>
+                    <input readOnly hidden={true} id="primaryKey" value={detalhe.id}/>
+                    <label className="form-label" htmlFor='tipo'>Tipo:</label>
+                    <select className="form-select" id="tipo">
+                            <option>Móveis</option>
+                            <option>Eletrodomésticos</option>
+                            <option>Madeira/ Galhos</option>
+                            <option>Outros</option>
+                        </select>
                         <label htmlFor="" className="form-label">Descrição:</label>
-                        <input defaultValue={detalhe.descricao} className=" form-control m-1" type="text" />
+                        <input defaultValue={detalhe.descricao} className=" form-control m-1" type="text" id="descricao" />
                         <label htmlFor="" className="form-label">Endereço:</label>
-                        <input defaultValue={detalhe.endereco} className="form-control m-1" type="text" />
+                        <input defaultValue={detalhe.endereco} className="form-control m-1" type="text" id="endereco"/>
+                        
+                        <div className='row g-3'>
+                        
+                        <div className="col-sm-6">
+                            <label htmlFor="dayOfWeek" className="form-label">Melhor dia:</label>
+                            <select className="form-select" id="dayOfWeek">
+                            <option>{detalhe.melhor_dia}</option>
+                                <option>Segunda-Feira</option>
+                                <option>Terça-Feira</option>
+                                <option>Quarta-Feira</option>
+                                <option>Quinta-Feira</option>
+                                <option>Sexta-Feira</option>
+                                <option>Sábado</option>
+                                <option>Domingo</option>
+                            </select>
+                        </div>
+                        <div className="col-sm-6">
+                        <label htmlFor="periodo" className="form-label">Melhor horário:</label>
+                            <select className="form-select" id="periodo">
+                                <option>{detalhe.melhor_horario}</option>
+                                <option>Manhã</option>
+                                <option>Tarde</option>
+                                <option>Noite</option>
+                            </select>
+                        </div>
+                    </div>
+                    <Button className="d-flex mt-2" type="submit">Salvar</Button>
                     </form>
 
                 </Modal.Body>
                 <Modal.Footer className="d-flex justify-space-between">
 
-                    <Button className="d-flex" onClick={() => handleEditSolicitacao()}>Salvar</Button>
+                    
                     <Button variant="danger" className="d-flex" onClick={() => setShowEditar(false)}>Cancelar</Button>
                 </Modal.Footer>
             </Modal>
@@ -235,6 +320,11 @@ export function Historico() {
             <ToastContainer position="middle-center">
                 <Toast show={showToastDelete} onClose={() => setShowToastDelete(false)} delay={2000} autohide>
                     <Toast.Body>Solicitação excluída com sucesso!</Toast.Body>
+                </Toast>
+            </ToastContainer>
+            <ToastContainer position="middle-center">
+                <Toast show={showToastUpdate} onClose={() => setShowToastDelete(false)} delay={2000} autohide>
+                    <Toast.Body>Solicitação alterada com sucesso!</Toast.Body>
                 </Toast>
             </ToastContainer>
 
