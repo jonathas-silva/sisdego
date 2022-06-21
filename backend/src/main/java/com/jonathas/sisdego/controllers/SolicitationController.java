@@ -44,4 +44,9 @@ public class SolicitationController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Solicitacao> alterarSolicitacao(@PathVariable Long id, @RequestBody SolicitacaoDTO solicitacaoDTO){
+        return ResponseEntity.ok(service.alterar(id, solicitacaoDTO));
+    }
+
 }

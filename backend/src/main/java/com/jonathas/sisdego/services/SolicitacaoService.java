@@ -69,5 +69,22 @@ public class SolicitacaoService {
 
     public void delete(Long id) {
            solicitacaoRepository.deleteById(id);
+
+
+    }
+
+    public Solicitacao alterar(Long id, SolicitacaoDTO solicitacaoDTO) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(id).get();
+
+        solicitacao.setTipo(solicitacaoDTO.getTipo());
+        solicitacao.setDescricao(solicitacaoDTO.getDescricao());
+        solicitacao.setEndereco(solicitacaoDTO.getEndereco());
+        solicitacao.setMelhor_dia(solicitacaoDTO.getMelhor_dia());
+        solicitacao.setMelhor_horario(solicitacaoDTO.getMelhor_horario());
+
+
+        //Não vamos alterar o status da solicitação
+
+        return solicitacaoRepository.save(solicitacao);
     }
 }
