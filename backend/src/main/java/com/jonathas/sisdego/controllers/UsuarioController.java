@@ -7,6 +7,7 @@ import com.jonathas.sisdego.services.SolicitacaoService;
 import com.jonathas.sisdego.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,16 +20,29 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
+
     @GetMapping
-    public ResponseEntity<List<Usuario>> listAll(){
+    public ResponseEntity<List<Usuario>> listAll() {
         List<Usuario> resultado = service.findAll();
         return ResponseEntity.ok().body(resultado);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity findById(@PathVariable Long id){
+    public ResponseEntity findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.findById(id));
     }
 
+    @PostMapping
+    public ResponseEntity<Usuario> adicionarUsuario(@RequestBody Usuario usuario) {
+        return ResponseEntity.ok(service.salvarUsuario(usuario));
+    }
+
+    @GetMapping("/validarSenha")
+    public ResponseEntity<Boolean> validacao (@RequestParam String email, @RequestParam String senha){
+        return service.validarSenha(email, senha);
+    }
 
 }
+
+
+

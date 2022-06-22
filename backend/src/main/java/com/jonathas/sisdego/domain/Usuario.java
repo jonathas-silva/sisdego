@@ -20,7 +20,12 @@ public class Usuario implements Serializable {
     private List<Solicitacao> solicitacoes = new ArrayList<>();
 
     private String nome;
+
+    //estamos dizendo que o email, usado como login, deve ser único
+    @Column(unique = true)
     private String email;
+
+    private String senha;
 
     public Usuario(){
 
@@ -39,6 +44,14 @@ public class Usuario implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public List<Solicitacao> getSolicitacoes() {
