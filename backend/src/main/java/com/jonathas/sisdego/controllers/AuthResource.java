@@ -26,6 +26,4 @@ public class AuthResource {
         response.getWriter().flush();
         return ResponseEntity.noContent().build();
     }
-
-
 }

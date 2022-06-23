@@ -8,6 +8,7 @@ import Inicio from "./pages/Inicio";
 import './App.css'
 import Teste from "./pages/testes";
 import CatadorHome from "./pages/CatadorHome";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         <Header_logado />
         <div className="principal-container m-0 p-0 ">
           <Routes>
-            <Route path="/" element={<Inicio />} />
+            <Route path="/" element={<Login />} />
             <Route path="/historico" element={<Historico />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/testes" element={<Teste />} />

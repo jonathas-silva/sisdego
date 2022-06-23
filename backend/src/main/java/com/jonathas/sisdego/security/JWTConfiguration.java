@@ -14,6 +14,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @EnableWebSecurity
 public class JWTConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -48,6 +50,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
         JWTValidationFilter jwtValidationFilter = new JWTValidationFilter(authenticationManager());
         jwtValidationFilter.setSecret(secret);
 
+        http.cors().and().csrf().disable(); //precisa desabilitar para autorizar o acesso através de domínios externos?
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
@@ -55,8 +58,9 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(jwtAuthenticatonFilter)
                 .addFilter(jwtValidationFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                //não deixa o estado da sessão gravado no servidor
 
-        //não deixa o estado da sessão gravado no servidor
+
 
     }
 
@@ -66,6 +70,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.setAllowedMethods(Arrays.asList("POST", "GET" ,"PUT", "DELETE", "OPTIONS"));
         source.registerCorsConfiguration("/**", corsConfiguration);
 
         return source;
