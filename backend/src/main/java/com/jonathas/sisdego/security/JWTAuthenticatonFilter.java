@@ -25,14 +25,9 @@ import java.util.Date;
 
 public class JWTAuthenticatonFilter extends UsernamePasswordAuthenticationFilter {
 
-    //constantes utilizadas aqui para fins de teste.
-    //Posteriomente devem ser transportadas para o arquivo de configuração
 
- /*   public static final int EXPIRATION = 600000;
-    public static final String SECRET = "3dac9da4-aa04-4ab0-ad04-6c9973173bcf";*/
-
-    private String secret;
-    private Long expiration;
+    private static String secret;
+    private static Long expiration;
 
     public void setSecret(String secret) {
         this.secret = secret;
@@ -72,13 +67,17 @@ public class JWTAuthenticatonFilter extends UsernamePasswordAuthenticationFilter
 
         DetalheUsuarioData usuarioData = (DetalheUsuarioData) authResult.getPrincipal();
 
-        String token = JWT.create()
-                .withSubject(usuarioData.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
-                .sign(Algorithm.HMAC512(secret));
+        String token = generateToken(usuarioData.getUsername());
 
         response.getWriter().write(token);
         response.getWriter().flush();
 
+    }
+
+    public static String generateToken(String username) {
+        return JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
+                .sign(Algorithm.HMAC512(secret));
     }
 }

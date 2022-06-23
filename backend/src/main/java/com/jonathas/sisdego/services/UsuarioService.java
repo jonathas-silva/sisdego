@@ -1,5 +1,6 @@
 package com.jonathas.sisdego.services;
 
+import com.jonathas.sisdego.data.DetalheUsuarioData;
 import com.jonathas.sisdego.domain.DTO.SolicitacaoDTO;
 import com.jonathas.sisdego.domain.Solicitacao;
 import com.jonathas.sisdego.domain.Usuario;
@@ -9,6 +10,8 @@ import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,5 +58,23 @@ public class UsuarioService {
         HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
 
         return ResponseEntity.status(status).body(valid);
+    }
+
+    //retornar o NOME usuário logado
+    public static String authenticated() {
+
+        String username = null;
+
+        Object principal =  SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if(principal instanceof UserDetails) {
+            username = ((DetalheUsuarioData) principal).getUsername();
+        }else {
+            username = principal.toString();
+        }
+        return username;
     }
 }

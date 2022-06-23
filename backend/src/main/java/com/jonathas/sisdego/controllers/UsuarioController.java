@@ -1,5 +1,6 @@
 package com.jonathas.sisdego.controllers;
 
+import com.jonathas.sisdego.data.DetalheUsuarioData;
 import com.jonathas.sisdego.domain.DTO.SolicitacaoDTO;
 import com.jonathas.sisdego.domain.Solicitacao;
 import com.jonathas.sisdego.domain.Usuario;
@@ -9,10 +10,14 @@ import com.jonathas.sisdego.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 @RestController
@@ -50,11 +55,8 @@ public class UsuarioController {
     @GetMapping("/teste")
     public String teste() {
 
+        return UsuarioService.authenticated();
 
-        String valores = "token: " + util.getSecret() +
-                "\n" +
-                "Expiration: " + util.getExpiration();
-        return valores;
     }
 
 }
