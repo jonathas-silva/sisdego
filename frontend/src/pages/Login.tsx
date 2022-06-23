@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { BASE_URL } from "../assets/Keys";
+import { SESSION_KEY, setSessionKeys } from "../assets/Session_keys";
 
 export default function Login() {
 
@@ -33,8 +34,13 @@ export default function Login() {
             response => {
                 console.log (response.data);
                 console.log (response.data);
+                setSessionKeys(response.data);
+            }   
+        ).catch(function (error){
+            if(error.response.status == 403){
+                alert("Login ou senha incorretos!");
             }
-        )
+        })  
 
     }
     

@@ -38,3 +38,7 @@ export type CatadorDTO = {
     solicitacoes: SolicitacaoDTO[];
     nome: string;
 }
+
+export type LocalUser = {
+    token: string;
+}
