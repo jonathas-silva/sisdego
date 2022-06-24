@@ -7,7 +7,8 @@ import { BsPencilFill } from 'react-icons/bs';
 import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosRequestConfig } from "axios";
 import { BASE_URL } from "../assets/Keys";
-import { getSessionId, getSessionKey } from "../assets/Session_keys";
+import { getSessionId, getSessionKey, setSessionId, setSessionKey } from "../assets/Session_keys";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -61,9 +62,13 @@ export function Historico() {
     monitorando a variável 'atualizar', então basta mudar o valor dessa variável para
     gerar uma nova leitura*/
     const [atualizar, setAtualizar] = useState(true);
+    const nav = useNavigate();
 
 
     useEffect(() => {
+
+        
+
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
         axios.get(`${BASE_URL}/usuarios/${usuario_ativo}`, {
             headers: {
@@ -76,8 +81,22 @@ export function Historico() {
                 console.log(data);
             }
 
+        //Aqui verificamos se o usuário não possui permissões.
+        //Se for o caso, é redirecionado para o login
+        ).catch(
+            function (error) {
+                if (error.response.status == 403){
+                    setSessionId("-1");
+                    setSessionKey("vazio");
+                    alert("Parece que você não está logado. Faça o login para continuar!");
+                    nav("/");
+                }
+            }
         )
-        console.log('iteraction');
+        
+             
+        
+    
 
     }, [atualizar]);
 

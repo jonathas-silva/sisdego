@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { Button, Container, Nav, Navbar, Stack } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { getSessionId } from '../assets/Session_keys';
+import { Link, useNavigate } from 'react-router-dom'
+import { getSessionId, setSessionId, setSessionKey } from '../assets/Session_keys';
 import './Header_logado.css'
 
 
 export default function Header() {
 
+    const nav = useNavigate();
+
+    function logout(): void {
+        setSessionKey("vazio");
+        setSessionId("-1");
+        nav("/");
+    }
 
     const usuario_ativo: number = getSessionId();
     /*Pegamos o número do id ativo. Desta forma a opção de 'nova solicitação' e 'sair'
@@ -36,7 +43,7 @@ export default function Header() {
             <div className='d-flex'>
                 {
                      usuario_ativo!=-1
-                    ? <button className='btn text-danger'>sair</button> : null
+                    ? <button className='btn text-danger' onClick={() => logout()}>sair</button> : null
                     }
                 <h2 className='logo m-0 p-2 d-flex'>SISDEGO</h2></div>
         </Stack>
@@ -44,3 +51,5 @@ export default function Header() {
 
 
 }   
+
+

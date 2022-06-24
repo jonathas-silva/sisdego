@@ -34,7 +34,9 @@ export default function Login() {
                         }
                     }
                 ).catch(function(error){
-                    alert("Sessão expirada! Faça login novamente para entrar!");
+                   alert("Sessão expirada! Faça login novamente para entrar!");
+                   setSessionId("-1");
+                   setSessionKey("vazio");
                     /* Só chegaremos nessa parte SE houver um token armazenado E ele estiver expirado
                     Caso contrário, o sistema não tentará fazer um refresh_token.*/
                 })
@@ -88,7 +90,9 @@ export default function Login() {
         }).then(
             resposta => {
                 console.log(resposta.data);
+                console.log(resposta.status);
                 setSessionId(resposta.data);
+                nav("/historico");
             }
         )        
 
@@ -104,16 +108,19 @@ export default function Login() {
     }
     
     return(
-       <div className="d-flex container">
+       <div className="container-sm inicio-principal mt-4">
         <form className="m-1 mb-2" onSubmit={handleSubmit}>
             <label htmlFor="email" className="form-label"> Email</label>
             <input type="text" className="form-control" id="email" />
             <label htmlFor="senha" className="form-label" > Senha</label>
-            <input type="text" className="form-control" id="senha"/>
+            <input type="password" className="form-control" id="senha"/>
             
-            <button className="btn btn-primary mt-2 col-12">Entrar</button>
+            <button className="btn btn-primary mt-3 col-12">Entrar</button>
             
         </form>
+
+        <p className="m-2 mt-2 text-end"> <a className="link-primary" href="/cadastro">Ainda não sou cadastrado</a></p>
+
        </div>
     )
 }
