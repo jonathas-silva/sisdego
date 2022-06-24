@@ -1,8 +1,48 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { useEffect } from "react";
+import { set } from "react-hook-form";
 import { BASE_URL } from "../assets/Keys";
-import { SESSION_KEY, setSessionKeys } from "../assets/Session_keys";
+import { getSessionId, getSessionKey, SESSION_KEY, setSessionId, setSessionKey } from "../assets/Session_keys";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Login() {
+
+    const nav = useNavigate();
+
+    //verifica se há um token no localStorage e tenta fazer um refresh. Se der certo, redireciona para a página 'Histórico'
+    useEffect(
+        () => {
+            const usuario_logado = getSessionKey();
+            console.log(usuario_logado);
+            if(usuario_logado != "vazio"){
+            
+            
+                const config: AxiosRequestConfig = {
+                    baseURL: BASE_URL,
+                    method: 'POST',
+                    url: "/auth/refresh_token",
+                    headers: {
+                        'Authorization': `Bearer ${usuario_logado}`
+                    }
+                }
+                axios(config).then(
+                    response => {
+                        if(response.status == 200){
+                            setSessionKey(response.data);
+                            nav("/historico");
+                        }
+                    }
+                ).catch(function(error){
+                    alert("Sessão expirada! Faça login novamente para entrar!");
+                    /* Só chegaremos nessa parte SE houver um token armazenado E ele estiver expirado
+                    Caso contrário, o sistema não tentará fazer um refresh_token.*/
+                })
+            }
+        }, []
+    );
+
+
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
@@ -31,10 +71,29 @@ export default function Login() {
         }
 
         axios(config).then(
-            response => {
+            response => { //se der certo a requisição:
                 console.log (response.data);
-                console.log (response.data);
-                setSessionKeys(response.data);
+                console.log (response.status);
+                setSessionKey(response.data);
+
+            
+        axios.get(`${BASE_URL}/usuarios/getEmail`, {
+            
+            params: {
+                email: email
+            }
+            ,headers: {
+                'Authorization': `Bearer ${response.data}`
+            }
+        }).then(
+            resposta => {
+                console.log(resposta.data);
+                setSessionId(resposta.data);
+            }
+        )        
+
+
+
             }   
         ).catch(function (error){
             if(error.response.status == 403){

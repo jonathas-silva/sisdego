@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonathas.sisdego.data.DetalheUsuarioData;
 import com.jonathas.sisdego.domain.Usuario;
+import com.jonathas.sisdego.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 //Classe responsável por autenticar o usuário e gerar o token JTW
 
@@ -28,6 +31,9 @@ public class JWTAuthenticatonFilter extends UsernamePasswordAuthenticationFilter
 
     private static String secret;
     private static Long expiration;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public void setSecret(String secret) {
         this.secret = secret;
@@ -67,9 +73,10 @@ public class JWTAuthenticatonFilter extends UsernamePasswordAuthenticationFilter
 
         DetalheUsuarioData usuarioData = (DetalheUsuarioData) authResult.getPrincipal();
 
+        Map<Long, String> resposta = new HashMap<Long, String>(); //devolvendo o id junto com o token
         String token = generateToken(usuarioData.getUsername());
 
-        response.getWriter().write(token);
+        response.getWriter().write(String.valueOf(token));
         response.getWriter().flush();
 
     }

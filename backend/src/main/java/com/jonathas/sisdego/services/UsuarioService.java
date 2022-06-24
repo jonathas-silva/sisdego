@@ -27,7 +27,6 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder encoder;
 
-
     @Transactional(readOnly = true)
     public Usuario findById(Long id) {
         Usuario resultado = usuarioRepository.findById(id).get();
@@ -76,5 +75,9 @@ public class UsuarioService {
             username = principal.toString();
         }
         return username;
+    }
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email).get();
     }
 }

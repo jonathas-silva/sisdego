@@ -52,10 +52,9 @@ public class UsuarioController {
         return service.validarSenha(email, senha);
     }
 
-    @GetMapping("/teste")
-    public String teste() {
-
-        return UsuarioService.authenticated();
+    @GetMapping("/getEmail")
+    public Long getEmail(@RequestParam String email) {
+        return service.findByEmail(email).getId();
 
     }
 
