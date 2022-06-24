@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { useEffect } from "react";
-import { set } from "react-hook-form";
+
 import { BASE_URL } from "../assets/Keys";
-import { getSessionId, getSessionKey, SESSION_KEY, setSessionId, setSessionKey, setSessionRole } from "../assets/Session_keys";
+import { getSessionKey, setSessionId, setSessionKey, setSessionRole } from "../assets/Session_keys";
 import { useNavigate } from 'react-router-dom';
 import { UsuarioDTO } from "../assets/Types";
 
@@ -50,8 +50,8 @@ export default function Login() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
-        const email = (event.target as any).email.value;
-        const senha = (event.target as any).senha.value;
+        const email:string = (event.target as any).email.value;
+        const senha:string = (event.target as any).senha.value;
 
 
         //limpando os forms
@@ -66,7 +66,7 @@ export default function Login() {
             method: 'POST',
             url: '/login',
             data: {
-                email: email,
+                email: email.toLowerCase(),
                 senha: senha
             }
         }
@@ -81,7 +81,7 @@ export default function Login() {
         axios.get(`${BASE_URL}/usuarios/getEmail`, {
             
             params: {
-                email: email
+                email: email.toLowerCase()
             }
             ,headers: {
                 'Authorization': `Bearer ${response.data}`
@@ -112,8 +112,11 @@ export default function Login() {
             if(error.response.status == 403){
                 alert("Login ou senha incorretos!");
             }
-        })  
+        })
 
+    }
+    function cadastrar(): void {
+        nav("/cadastro");
     }
     
     return(
@@ -128,8 +131,10 @@ export default function Login() {
             
         </form>
 
-        <p className="m-2 mt-2 text-end"> <a className="link-primary" href="/cadastro">Ainda não sou cadastrado</a></p>
+        <p className="m-2 mt-2 text-end"> <a className="link-primary" href="#" onClick={() => cadastrar()}>Ainda não sou cadastrado</a></p>
 
        </div>
     )
 }
+
+

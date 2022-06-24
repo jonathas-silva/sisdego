@@ -13,7 +13,7 @@ export function Cadastro() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const nome = (event.target as any).nome.value;
-        const email = (event.target as any).email.value;
+        const email:string = (event.target as any).email.value;
         const senha = (event.target as any).senha.value;
         const confirmSenha = (event.target as any).confirmSenha.value;
         const id_catador = -1; //serão permitidos novos cadastros apenas para usuários, não catadores
@@ -31,7 +31,7 @@ export function Cadastro() {
             url: '/usuarios',
             data:{
                 nome: nome,
-                email: email,
+                email: email.toLowerCase(),
                 senha: senha,
                 idCatador: id_catador
             }

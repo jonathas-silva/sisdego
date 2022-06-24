@@ -8,7 +8,7 @@ export default function Footer() {
                     <p className='h6'>Conheça mais:</p>
                     <ul className='list-unstyled text-decoration-none'>
                         <a href=""><li>Sobre as Cooperativas</li></a>
-                        <a href=""><li>Sobre os desenvolvedores</li></a>
+                        <a href="https://github.com/jonathas-silva"><li>Sobre os desenvolvedores</li></a>
                         <a href=""><li>Como ajudar</li></a>
                     </ul>
                 </div>
