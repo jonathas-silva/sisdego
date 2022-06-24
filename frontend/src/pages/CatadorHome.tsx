@@ -6,6 +6,8 @@ import { RiInboxUnarchiveLine } from 'react-icons/ri';
 import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { BASE_URL } from "../assets/Keys";
+import { getSessionId, getSessionKey, getSessionRole, setSessionId, setSessionKey } from "../assets/Session_keys";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -36,8 +38,11 @@ export default function CatadorHome() {
 
     const [radioValue, setRadioValue] = useState('1');
 
-    const catador_ativo: number = 1;
-    const [endereco, setEndereco] = useState('solicitacoes');
+    const role_ativo: number = getSessionRole();
+    const catador_ativo: number = getSessionId();
+    const token_ativo: string = getSessionKey();
+    const nav = useNavigate();
+
 
     const radios = [
         { name: 'Todas  ', value: '1' },
@@ -56,9 +61,19 @@ export default function CatadorHome() {
     const [solicArray, setSolicArray] = useState<SolicitacaoDTO[]>();
 
     useEffect(() => {
+
+        if(role_ativo == 0){ //se for um usuário convencional tentando acessar essa página
+            nav("/historico");
+        }
+
+
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
         if (radioValue == '1') {
-            axios.get(`${BASE_URL}/${endereco}`).then(
+            axios.get(`${BASE_URL}/solicitacoes`, {
+                headers: {
+                    Authorization: `Bearer ${token_ativo}`
+                }
+            }).then(
                 response => {
                     const data = response.data as SolicitacaoDTO[];
                     setSolicArray(data);
@@ -66,11 +81,26 @@ export default function CatadorHome() {
                 }   
             )
         } else {
-            axios.get(`${BASE_URL}/catadores/${catador_ativo}`).then(
+            axios.get(`${BASE_URL}/catadores/${catador_ativo}`, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${token_ativo}`
+                    }
+                }
+            ).then(
                 response => {
                     const data = response.data as CatadorDTO;
                     setSolicArray(data.solicitacoes);
                     console.log(solicArray);
+                }
+            ).catch(
+                function (error) {
+                    if (error.response.status == 403){
+                        setSessionId(-1);
+                        setSessionKey("vazio");
+                        alert("Parece que você não está logado. Faça seu login para continuar!");
+                        nav("/");
+                    }
                 }
             )
         }
@@ -90,7 +120,10 @@ export default function CatadorHome() {
         const config: AxiosRequestConfig = {
             baseURL: `${BASE_URL}`,
             method: 'PUT',
-            url: `/catadores/${catador_ativo}?idSolicitacao=${idSolicitacao}`
+            url: `/catadores/${catador_ativo}?idSolicitacao=${idSolicitacao}`,
+            headers: {
+                Authorization: `Bearer ${token_ativo}`
+            }
         }
 
         axios(config).then(
@@ -113,7 +146,11 @@ export default function CatadorHome() {
         //aqui precisamos deletar a solicitação do catador,
         //e depois deletar do banco de dados
 
-        axios.delete(`${BASE_URL}/catadores/concluir/${catador_ativo}?idSolicitacao=${id}`).then(
+        axios.delete(`${BASE_URL}/catadores/concluir/${catador_ativo}?idSolicitacao=${id}`, {
+            headers: {
+                Authorization: `Bearer ${token_ativo}`
+            }
+        }).then(
             response => {
                 alert ("Solicitação Concluída com sucesso! Ela será removida da lista de solicitações");
                 setAtualizar(!atualizar);
@@ -126,7 +163,11 @@ export default function CatadorHome() {
 
     function DevolverSolicitacao(id: number) {
         //Essa função muda o status da solicitação para 'Aguardando'
-        axios.delete(`${BASE_URL}/catadores/${catador_ativo}?idSolicitacao=${id}`).then(
+        axios.delete(`${BASE_URL}/catadores/${catador_ativo}?idSolicitacao=${id}`, {
+            headers: {
+                Authorization: `Bearer ${token_ativo}`
+            }
+        }).then(
             response => {
                 alert("Solicitação devolvida à lista de solicitações disponíveis");
                 setAtualizar(!atualizar);
@@ -236,6 +277,8 @@ export default function CatadorHome() {
                         <p className="fw-light">Criado em {detalhe.data}</p>
                         <p>{detalhe.descricao}</p>
                         <p>Endereço: {detalhe.endereco}</p>
+                        <p>Melhor dia: {detalhe.melhor_dia}</p>
+                        <p>Melhor horário: {detalhe.melhor_horario}</p>
                         <p>Status: {detalhe.estado}</p>
                     </div>
                     <div className="text-start">

@@ -6,9 +6,10 @@ export type Usuario = {
 
 export type UsuarioDTO = {
     id: number;
-    solicitacoes: SolicitacaoDTO[];
-    nome: string;
     email: string;
+    nome: string;
+    solicitacoes: SolicitacaoDTO[];
+    idCatador: number;
 }
 
 export type Solicitacao = {
@@ -37,6 +38,7 @@ export type CatadorDTO = {
     id: number;
     solicitacoes: SolicitacaoDTO[];
     nome: string;
+    email: string;
 }
 
 export type LocalUser = {

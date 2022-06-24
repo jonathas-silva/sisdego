@@ -29,6 +29,10 @@ public class Usuario implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
+
+    //Mostra a id do catador, se o usuário for catador. Se não, é -1
+    private Integer idCatador;
+
     public Usuario(){
 
     }
@@ -66,6 +70,14 @@ public class Usuario implements Serializable {
 
     public String getNome() {
         return nome;
+    }
+
+    public Integer getIdCatador() {
+        return idCatador;
+    }
+
+    public void setIdCatador(Integer idCatador) {
+        this.idCatador = idCatador;
     }
 
     public void setNome(String nome) {

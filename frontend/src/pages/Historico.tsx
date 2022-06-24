@@ -7,7 +7,7 @@ import { BsPencilFill } from 'react-icons/bs';
 import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosRequestConfig } from "axios";
 import { BASE_URL } from "../assets/Keys";
-import { getSessionId, getSessionKey, setSessionId, setSessionKey } from "../assets/Session_keys";
+import { getSessionId, getSessionKey, getSessionRole, setSessionId, setSessionKey } from "../assets/Session_keys";
 import { useNavigate } from "react-router-dom";
 
 
@@ -22,11 +22,6 @@ const dicaBtnCancel = (props: JSX.IntrinsicAttributes & TooltipProps & React.Ref
         Deletar solicitação
     </Tooltip>
 );
-const SolicitacaoAlterada = (props: JSX.IntrinsicAttributes & TooltipProps & React.RefAttributes<HTMLDivElement>) => (
-    <Tooltip id="button-tooltip" {...props}>
-        Solicitação alterada!
-    </Tooltip>
-);
 
 
 //Interface com parâmetros opcionais
@@ -38,6 +33,7 @@ interface detalhes {
     endereco?: string;
     melhor_dia?: string;
     melhor_horario?: string;
+    estado?: string;
     mostrar: boolean;
 }
 
@@ -46,6 +42,7 @@ export function Historico() {
 
     const usuario_ativo: number = getSessionId();
     const token_ativo: string = getSessionKey();
+    const role_ativo: number = getSessionRole();
 
     const inicializado: detalhes = {
         mostrar: false
@@ -66,8 +63,10 @@ export function Historico() {
 
 
     useEffect(() => {
-
         
+        if(role_ativo == 1){
+            nav("/catador");
+        }        
 
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
         axios.get(`${BASE_URL}/usuarios/${usuario_ativo}`, {
@@ -86,7 +85,7 @@ export function Historico() {
         ).catch(
             function (error) {
                 if (error.response.status == 403){
-                    setSessionId("-1");
+                    setSessionId(-1);
                     setSessionKey("vazio");
                     alert("Parece que você não está logado. Faça o login para continuar!");
                     nav("/");
@@ -170,10 +169,10 @@ export function Historico() {
                 response => {
                     console.log(response.status);
                     console.log(response.data);
-                    setShowToastUpdate(true);
                     setAtualizar(!atualizar);
                     setShowEditar(false);
                     setDetalhe({ mostrar: false });
+                    setShowToastUpdate(true);
                 }
             )
         }}
@@ -206,6 +205,7 @@ export function Historico() {
                                             endereco: solicitacao.endereco,
                                             melhor_dia: solicitacao.melhor_dia,
                                             melhor_horario: solicitacao.melhor_horario,
+                                            estado: solicitacao.estado,
                                             mostrar: true
                                         }
                                     )
@@ -250,6 +250,7 @@ export function Historico() {
                         <p>Endereço: {detalhe.endereco}</p>
                         <p>Melhor dia: {detalhe.melhor_dia}</p>
                         <p>Melhor horário: {detalhe.melhor_horario}</p>
+                        <p>Status: {detalhe.estado}</p>
                     </div>
                     <div className="text-start">
                         {/* inserção de dica sobre o botão*/}
@@ -351,9 +352,7 @@ export function Historico() {
                 <Toast show={showToastDelete} onClose={() => setShowToastDelete(false)} delay={2000} autohide>
                     <Toast.Body>Solicitação excluída com sucesso!</Toast.Body>
                 </Toast>
-            </ToastContainer>
-            <ToastContainer position="middle-center">
-                <Toast show={showToastUpdate} onClose={() => setShowToastDelete(false)} delay={2000} autohide>
+                <Toast show={showToastUpdate} onClose={() => setShowToastUpdate(false)} delay={2000} autohide>
                     <Toast.Body>Solicitação alterada com sucesso!</Toast.Body>
                 </Toast>
             </ToastContainer>

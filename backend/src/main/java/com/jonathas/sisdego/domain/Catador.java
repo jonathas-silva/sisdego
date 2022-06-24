@@ -20,6 +20,9 @@ public class Catador implements Serializable {
 
     private String nome;
 
+    @Column(unique = true)
+    private String email;
+
     public Catador(){
 
     }
@@ -37,6 +40,14 @@ public class Catador implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Solicitacao> getSolicitacoes() {

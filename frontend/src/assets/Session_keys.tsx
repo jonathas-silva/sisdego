@@ -22,8 +22,8 @@ export function clearSessionKey() {
     localStorage.removeItem("token");
 }
 
-export function setSessionId(id: string){
-    localStorage.setItem("id", id);
+export function setSessionId(id: number){
+    localStorage.setItem("id", id.toString());
     };
 
 
@@ -38,4 +38,24 @@ export function getSessionId(): number{
 
 export function clearSessionId() {
     localStorage.removeItem("id");
+}
+
+
+//1 para catador, 0 para usuário convencional
+export function setSessionRole(role: number){
+    localStorage.setItem("role", role.toString());
+    };
+
+
+export function getSessionRole(): number{
+    let teste = localStorage.getItem("role");
+    if(teste==null){
+        return -1
+    } else {
+        return parseInt(teste);
+    }
+}
+
+export function clearSessionRole() {
+    localStorage.removeItem("role");
 }

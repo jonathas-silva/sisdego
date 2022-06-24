@@ -53,8 +53,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/getEmail")
-    public Long getEmail(@RequestParam String email) {
-        return service.findByEmail(email).getId();
+    public Usuario getEmail(@RequestParam String email) {
+        return service.findByEmail(email);
 
     }
 

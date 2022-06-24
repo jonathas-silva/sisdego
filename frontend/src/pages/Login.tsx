@@ -2,8 +2,9 @@ import axios, { AxiosRequestConfig } from "axios";
 import { useEffect } from "react";
 import { set } from "react-hook-form";
 import { BASE_URL } from "../assets/Keys";
-import { getSessionId, getSessionKey, SESSION_KEY, setSessionId, setSessionKey } from "../assets/Session_keys";
+import { getSessionId, getSessionKey, SESSION_KEY, setSessionId, setSessionKey, setSessionRole } from "../assets/Session_keys";
 import { useNavigate } from 'react-router-dom';
+import { UsuarioDTO } from "../assets/Types";
 
 
 export default function Login() {
@@ -35,7 +36,7 @@ export default function Login() {
                     }
                 ).catch(function(error){
                    alert("Sessão expirada! Faça login novamente para entrar!");
-                   setSessionId("-1");
+                   setSessionId(-1);
                    setSessionKey("vazio");
                     /* Só chegaremos nessa parte SE houver um token armazenado E ele estiver expirado
                     Caso contrário, o sistema não tentará fazer um refresh_token.*/
@@ -52,8 +53,6 @@ export default function Login() {
         const email = (event.target as any).email.value;
         const senha = (event.target as any).senha.value;
 
-        console.log(email);
-        console.log(senha);
 
         //limpando os forms
         //É A MELHOR MANEIRA? Pesquisar sobre!
@@ -89,10 +88,20 @@ export default function Login() {
             }
         }).then(
             resposta => {
-                console.log(resposta.data);
-                console.log(resposta.status);
-                setSessionId(resposta.data);
-                nav("/historico");
+                const data = resposta.data as UsuarioDTO;
+
+                //se for um catador
+                if(data.idCatador != -1){
+                    setSessionRole(1);
+                    setSessionId(data.idCatador);
+                    nav("/catador");
+                    
+                } else{
+                    setSessionRole(0);
+                    setSessionId(data.id);
+                    nav("/historico");
+                }
+
             }
         )        
 
