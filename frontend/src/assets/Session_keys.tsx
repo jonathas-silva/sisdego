@@ -27,12 +27,12 @@ export function setSessionId(id: string){
     };
 
 
-export function getSessionId(): string{
+export function getSessionId(): number{
     let teste = localStorage.getItem("id");
     if(teste==null){
-        return "vazio"
+        return -1
     } else {
-        return teste;
+        return parseInt(teste);
     }
 }
 

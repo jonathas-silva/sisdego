@@ -7,6 +7,7 @@ import { BsPencilFill } from 'react-icons/bs';
 import { GrUpdate } from 'react-icons/gr';
 import axios, { AxiosRequestConfig } from "axios";
 import { BASE_URL } from "../assets/Keys";
+import { getSessionId, getSessionKey } from "../assets/Session_keys";
 
 
 
@@ -42,14 +43,14 @@ interface detalhes {
 export function Historico() {
 
 
-    const usuario_ativo: number = 1;
+    const usuario_ativo: number = getSessionId();
+    const token_ativo: string = getSessionKey();
 
     const inicializado: detalhes = {
         mostrar: false
     }
 
     const [lista, setLista] = useState<UsuarioDTO>();
-
     //CONTROLE DOS TOASTS
     const [showToastDelete, setShowToastDelete] = useState(false);
     const [showToastUpdate, setShowToastUpdate] = useState(false);
@@ -64,7 +65,11 @@ export function Historico() {
 
     useEffect(() => {
         //Aqui fazemos com que o histórico mostre as solicitações apenas do usuário ativo
-        axios.get(`${BASE_URL}/usuarios/${usuario_ativo}`).then(
+        axios.get(`${BASE_URL}/usuarios/${usuario_ativo}`, {
+            headers: {
+                Authorization: `Bearer ${token_ativo}`
+            }
+        }).then(
             response => {
                 const data = response.data as UsuarioDTO;
                 setLista(data);
