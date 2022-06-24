@@ -53,6 +53,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable(); //precisa desabilitar para autorizar o acesso através de domínios externos?
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/usuarios").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(jwtAuthenticatonFilter)
