@@ -107,7 +107,10 @@ export function Historico() {
         const config: AxiosRequestConfig = {
             baseURL: `${BASE_URL}`,
             method: 'DELETE',
-            url: `solicitacoes/${id}`
+            url: `solicitacoes/${id}`,
+            headers: {
+                Authorization: `Bearer ${token_ativo}`
+            }
         }
 
         axios(config).then(
@@ -158,6 +161,9 @@ export function Historico() {
                     endereco: endereco,
                     melhor_dia: melhor_dia,
                     melhor_horario: melhor_periodo
+                },
+                headers: {
+                    Authorization: `Bearer ${token_ativo}`
                 }
             }
             axios(config).then(

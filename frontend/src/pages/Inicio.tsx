@@ -1,17 +1,37 @@
 
 import axios, { AxiosRequestConfig } from 'axios';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../assets/Keys';
+import { getSessionId, getSessionKey } from '../assets/Session_keys';
 import './inicio.css'
 
 export default function Inicio() {
 
     //declarando o navigate
 
-    //por enquanto vamos definir o usuário ativo estaticamente
-    const usuario_ativo: number = 1;
+    //definindo o usuário a partir do LocalStorage
+    const usuario_ativo: number = getSessionId();
+    const token_ativo: string = getSessionKey();
     const navigate = useNavigate();
+
+
+    //aqui verificamos, sobretudo, se o token que o usuário tem está válido.
+    //Se não for o caso, o mesmo é redirecionado para o login
+    useEffect(() => {
+
+    axios.get(`${BASE_URL}/auth`, {
+        headers: {
+            Authorization: `Bearer ${token_ativo}`
+        }
+    }).catch(
+        function(error){
+            if(error.response.status == 403){
+                navigate("/");
+            }
+        }
+    )
+    }, []);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
@@ -53,6 +73,9 @@ export default function Inicio() {
                     melhor_horario: melhor_periodo,
                     user: usuario_ativo,
                     estado: 0 //sempre novas postagens entram com o status 'Aguardando'
+                },
+                headers: {
+                    Authorization: `Bearer ${token_ativo}`
                 }
             }
 
@@ -65,6 +88,7 @@ export default function Inicio() {
                     navigate("/historico");
                 }
             )
+    
 
         }
     }

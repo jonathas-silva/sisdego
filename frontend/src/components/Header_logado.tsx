@@ -30,11 +30,15 @@ export default function Header() {
                         <Nav className='me-auto'>
                             {
                                 usuario_ativo!=-1
-                                ? <Link to="/" className='nav-link' onClick={() => setOpen(false)}>Nova Solicitação</Link>
+                                ? <Link to="/solicitacao" className='nav-link' onClick={() => setOpen(false)}>Nova Solicitação</Link>
                                 : null
                             }
-                            <Link to="/historico" className='nav-link' onClick={() => setOpen(false)}>Minhas Solicitações</Link>
-                            <Link to="/" className='nav-link' onClick={() => setOpen(false)}>Como funciona?</Link>
+                            {
+                                usuario_ativo!=-1
+                                ?<Link to="/historico" className='nav-link' onClick={() => setOpen(false)}>Minhas Solicitações</Link>
+                                :<Link to="/" className='nav-link' onClick={() => setOpen(false)}>Login</Link>
+                            }
+                            <Link to="/funcionamento" className='nav-link' onClick={() => setOpen(false)}>Como funciona?</Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

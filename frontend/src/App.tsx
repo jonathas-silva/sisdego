@@ -9,6 +9,7 @@ import './App.css'
 import Teste from "./pages/testes";
 import CatadorHome from "./pages/CatadorHome";
 import Login from "./pages/Login";
+import ComoFunciona from "./pages/ComoFunciona";
 
 
 function App() {
@@ -19,11 +20,12 @@ function App() {
         <div className="principal-container m-0 p-0 ">
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/solicitacao" element={<Inicio />} />
+            <Route path="/solicitacao" element={<Inicio />} />  
             <Route path="/historico" element={<Historico />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/testes" element={<Teste />} />
             <Route path="/catador" element={<CatadorHome />} />
+            <Route path="/funcionamento" element={<ComoFunciona />} />
           </Routes>
           <Footer />
         </div>
