@@ -82,8 +82,6 @@ export default function Inicio() {
             //Disparando o método post
             axios(config).then(
                 response => {
-                    console.log(response.status);
-                    console.log(response.data);
                     alert("Solicitação criada com sucesso!");
                     navigate("/historico");
                 }

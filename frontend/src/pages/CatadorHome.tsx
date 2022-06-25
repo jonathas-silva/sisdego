@@ -77,7 +77,7 @@ export default function CatadorHome() {
                 response => {
                     const data = response.data as SolicitacaoDTO[];
                     setSolicArray(data);
-                    console.log(solicArray);
+                    //console.log(solicArray);
                 }   
             )
         } else {
@@ -91,7 +91,7 @@ export default function CatadorHome() {
                 response => {
                     const data = response.data as CatadorDTO;
                     setSolicArray(data.solicitacoes);
-                    console.log(solicArray);
+                    //console.log(solicArray);
                 }
             ).catch(
                 function (error) {
@@ -106,7 +106,7 @@ export default function CatadorHome() {
         }
 
 
-        console.log('iteraction');
+        //console.log('iteraction');
 
     }, [atualizar]);
 
@@ -116,7 +116,7 @@ export default function CatadorHome() {
     }
 
     function aceitarSolic(idSolicitacao: number | undefined) {
-        console.log('tentando enviar');
+        //console.log('tentando enviar');
         const config: AxiosRequestConfig = {
             baseURL: `${BASE_URL}`,
             method: 'PUT',
@@ -128,7 +128,7 @@ export default function CatadorHome() {
 
         axios(config).then(
             response => {
-                console.log(response.status);
+                //console.log(response.status);
                 alert("Solicitação aceita com sucesso!");
                 setDetalhe({ mostrar: 0 });
                 setAtualizar(!atualizar);
