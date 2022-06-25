@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { useEffect, useState } from "react";
 
 import { BASE_URL } from "../assets/Keys";
-import { getSessionKey, setSessionId, setSessionKey, setSessionRole } from "../assets/Session_keys";
+import { getSessionId, getSessionKey, getSessionRole, setSessionId, setSessionKey, setSessionRole } from "../assets/Session_keys";
 import { useNavigate } from 'react-router-dom';
 import { UsuarioDTO } from "../assets/Types";
 import { Button } from "react-bootstrap";
@@ -32,7 +32,11 @@ export default function Login() {
                     response => {
                         if (response.status == 200) {
                             setSessionKey(response.data);
-                            nav("/historico");
+                            if(getSessionRole()==1){
+                            nav("/catador");
+                            }else{
+                                nav("/solicitacao")
+                            }
                         }
                     }
                 ).catch(function (error) {
@@ -101,7 +105,7 @@ export default function Login() {
                         } else {
                             setSessionRole(0);
                             setSessionId(data.id);
-                            nav("/historico");
+                            nav("/solicitacao");
                         }
 
                     }

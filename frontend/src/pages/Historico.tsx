@@ -189,8 +189,8 @@ export function Historico() {
                     <Row className="historico-cabecalho lead px-2 text-center">
                         <Col xs={4} sm={2}>Status</Col><Col xs={4} sm={6} >Data</Col><Col>Tipo</Col>
                     </Row>
-                    {
-                        lista?.solicitacoes.map(solicitacao => (
+                    {   
+                        lista?.solicitacoes.sort().map(solicitacao => (
 
                             <Stack key={solicitacao.id}><button className="btn btn-light border"
                                 onClick={() =>

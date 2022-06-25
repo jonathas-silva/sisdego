@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { Container } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../assets/Keys";
 
@@ -8,9 +9,11 @@ import { BASE_URL } from "../assets/Keys";
 
 export function Cadastro() {
 
+    const [loading, setLoading] = useState(false);
     const nav = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        setLoading(true);
         event.preventDefault();
         const nome = (event.target as any).nome.value;
         const email:string = (event.target as any).email.value;
@@ -21,8 +24,10 @@ export function Cadastro() {
 
         if(nome=="" || email=="" || senha==""){
             alert("Todos os campos são obrigatórios!");
+            setLoading(false);
         }else if(senha!=confirmSenha){
             alert("senhas e confirmação de senha são diferentes!");
+            setLoading(false);   
         } else{
 
         const config: AxiosRequestConfig = {
@@ -46,6 +51,7 @@ export function Cadastro() {
         ).catch(
             function (error) {
                 alert("Houve um erro no cadastro. Verifique seu email (deve ser único) e tente novamente!");
+                setLoading(false);
             }
         )
         }
@@ -64,7 +70,13 @@ export function Cadastro() {
             <label htmlFor="confirm_senha" className="form-label" > Confirme a senha</label>
             <input type="password" className="form-control" id="confirmSenha"/>
             
-            <button className="btn btn-primary mt-3 col-12">Cadastrar</button>
+            <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={loading}
+                    className="mt-3 col-12">
+                    {loading ? 'Carregando...' : 'Entrar'}
+                </Button>
             
         </form>
 
