@@ -12,7 +12,7 @@ export default function(){
             <ul className='list-unstyled'>
                 <li className='corpo'>1. Faça seu cadastro</li>
                 <li className='corpo'>2. Faça o Login</li>
-                <li className='corpo'>3. Ngita guia 'Novas Solicitações' você pode adicionar uma solicitação, informando o melhor dia e horário para a coleta.</li>
+                <li className='corpo'>3. Na guia 'Novas Solicitações' você pode adicionar uma solicitação, informando o melhor dia e horário para a coleta.</li>
                 <li className='corpo'>4. Na guia 'Minhas Solicitações' você pode ver todas as solicitações que já fez, com o status indicando se ela está <u>aguardando</u> algum catador aceitar ou <u>em fila de coleta</u> de algum catador. Lá você também pode alterar ou excluir a solicitação, caso seja necessário.</li>
                 <li className='corpo'>5. Aproveite e contribua com o Meio Ambiente!</li>
             </ul>

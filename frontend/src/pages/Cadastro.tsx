@@ -75,7 +75,7 @@ export function Cadastro() {
                     type="submit"
                     disabled={loading}
                     className="mt-3 col-12">
-                    {loading ? 'Carregando...' : 'Entrar'}
+                    {loading ? 'Carregando...' : 'Cadastrar'}
                 </Button>
             
         </form>
